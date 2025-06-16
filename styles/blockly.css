@@ -1,0 +1,265 @@
+.injectionDiv {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.blocklyWidgetDiv {
+  display: none;
+  position: absolute;
+  z-index: 99999;
+}
+
+.blocklyTooltipDiv {
+  background-color: #ffffc7;
+  border: 1px solid #ddc;
+  box-shadow: 4px 4px 20px 1px rgba(0,0,0,.15);
+  color: #000;
+  display: none;
+  font-size: 9pt;
+  opacity: .9;
+  padding: 2px;
+  position: absolute;
+  z-index: 100000;
+}
+
+.blocklyDropDownDiv {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  display: none;
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 4px;
+  background-color: #fff;
+}
+
+.blocklyDropDownContent {
+  max-height: 300px;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.blocklyDropDownArrow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  z-index: -1;
+  background-color: inherit;
+  border-color: inherit;
+}
+
+.blocklyResizeSE {
+  cursor: se-resize;
+  fill: #aaa;
+}
+
+.blocklyResizeSW {
+  cursor: sw-resize;
+  fill: #aaa;
+}
+
+.blocklyResizeLine {
+  stroke: #515A5A;
+  stroke-width: 1;
+}
+
+.blocklyHighlightedConnectionPath {
+  fill: none;
+  stroke: #fc3;
+  stroke-width: 4px;
+}
+
+.blocklyPath {
+  stroke-width: 1px;
+}
+
+.blocklySelected>.blocklyPath {
+  stroke: #fc3;
+  stroke-width: 3px;
+}
+
+.blocklySelected>.blocklyPathLight {
+  display: none;
+}
+
+.blocklyDragging>.blocklyPath,
+.blocklyDragging>.blocklyPathLight {
+  fill-opacity: .8;
+  stroke-opacity: .8;
+}
+
+.blocklyDragging>.blocklyPathDark {
+  display: none;
+}
+
+.blocklyDisabled>.blocklyPath {
+  fill-opacity: .5;
+  stroke-opacity: .5;
+}
+
+.blocklyDisabled>.blocklyPathLight,
+.blocklyDisabled>.blocklyPathDark {
+  display: none;
+}
+
+.blocklyText {
+  cursor: default;
+  fill: #fff;
+  font-family: sans-serif;
+  font-size: 11pt;
+}
+
+.blocklyNonEditableText>text {
+  pointer-events: none;
+}
+
+.blocklyNonEditableText>rect,
+.blocklyEditableText>rect {
+  fill: #fff;
+  fill-opacity: .6;
+}
+
+.blocklyNonEditableText>text,
+.blocklyEditableText>text {
+  fill: #000;
+}
+
+.blocklyEditableText:hover>rect {
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.blocklyBubbleText {
+  fill: #000;
+}
+
+.blocklyFlyout {
+  position: absolute;
+  z-index: 20;
+}
+
+.blocklyFlyoutButton {
+  fill: #888;
+  cursor: default;
+}
+
+.blocklyFlyoutButtonShadow {
+  fill: #666;
+}
+
+.blocklyFlyoutButton:hover {
+  fill: #aaa;
+}
+
+.blocklyFlyoutLabel {
+  cursor: default;
+}
+
+.blocklyFlyoutLabelBackground {
+  opacity: 0;
+}
+
+.blocklyFlyoutLabelText {
+  fill: #000;
+}
+
+.blocklySvg {
+  background-color: #fff;
+  outline: none;
+  overflow: hidden;
+  position: absolute;
+  display: block;
+}
+
+.blocklyScrollbarHandle {
+  fill: #ccc;
+  fill-opacity: .8;
+  stroke: #000;
+  stroke-width: 1px;
+  stroke-opacity: .2;
+}
+
+.blocklyScrollbarBackground {
+  fill: #fff;
+  stroke: #e4e4e4;
+  stroke-width: 1px;
+}
+
+.blocklyZoom>image {
+  opacity: .4;
+}
+
+.blocklyZoom>image:hover {
+  opacity: .6;
+}
+
+.blocklyZoom>image:active {
+  opacity: .8;
+}
+
+/* Darken or lighten toolbox categories. */
+.blocklyTreeRow:not(.blocklyTreeSelected):hover {
+  background-color: rgba(255, 255, 255, .2);
+}
+
+.blocklyToolboxDiv {
+  background-color: #f9f9f9;
+  overflow-x: visible;
+  overflow-y: auto;
+  padding: 0.5em;
+  position: absolute;
+  z-index: 70;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.blocklyTreeRoot {
+  padding: 4px 0;
+}
+
+.blocklyTreeRow {
+  height: 22px;
+  line-height: 22px;
+  margin-bottom: 3px;
+  padding-right: 8px;
+  white-space: nowrap;
+}
+
+.blocklyToolboxDelete {
+  cursor: not-allowed;
+}
+
+.blocklyToolboxGrab {
+  cursor: move;
+  cursor: grab;
+}
+
+.blocklyDragging>.blocklyPath,
+.blocklyDragging>.blocklyPathLight {
+  fill-opacity: 1.0;
+  stroke-opacity: 1.0;
+}
+
+.blocklyDragging {
+  display: block;
+  cursor: grabbing;
+}
+
+.blocklyDisabled .blocklyPath {
+  fill-opacity: .5;
+  stroke-opacity: .5;
+}
+
+.blocklyInsertionMarker>.blocklyPath {
+  stroke: none;
+}
+
+.blocklyText text {
+  fill: #fff;
+  font-family: inherit;
+  font-size: inherit;
+} 
