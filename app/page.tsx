@@ -183,14 +183,9 @@ export default function BroqLayout() {
             className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 font-medium"
           >
             <a
-              href="#"
+              href="https://agreeable-idea-6f3.notion.site/Broq-Documentation-2142e0439528805da5cfdd912d41433d"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={(e) => {
-                e.preventDefault();
-                // Replace with your Notion documentation URL
-                window.open('https://your-notion-doc-url.com', '_blank');
-              }}
             >
               Documentation
             </a>
