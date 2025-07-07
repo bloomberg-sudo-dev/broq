@@ -18,13 +18,13 @@ Here’s your updated and upgraded `README.md` — **fully rewritten** to:
 </p>
 
 <p align="center">
-  <a href="https://your-demo-url.com" target="_blank">
+  <a href="broq-home.vercel.app" target="_blank">
     <img alt="Try the Demo" src="https://img.shields.io/badge/%F0%9F%A7%B1%20Try%20Live%20Demo-blue?style=for-the-badge" />
   </a>
-  <a href="https://github.com/yourusername/broq" target="_blank">
+  <a href="https://github.com/bloomberg-sudo-dev/broq/" target="_blank"> 
     <img alt="GitHub stars" src="https://img.shields.io/github/stars/yourusername/broq?style=for-the-badge" />
   </a>
-  <a href="https://discord.gg/your-discord" target="_blank">
+  <a href="https://discord.com/invite/py6tw3f28N" target="_blank">
     <img alt="Discord" src="https://img.shields.io/discord/yourdiscordid?label=Join%20Community&style=for-the-badge&color=5865F2" />
   </a>
 </p>
@@ -47,10 +47,6 @@ It’s like **Scratch for prompt engineering** — build GPT pipelines by connec
 | Drag & Drop Blocks | Run the Flow | Load Example Template |
 |--------------------|--------------|------------------------|
 | ![Untitled video (1)](https://github.com/user-attachments/assets/9ee728eb-34c5-42fe-abd8-d0898f6ab90b) | ![Untitled video (2)](https://github.com/user-attachments/assets/b27817e3-f81e-4723-b6b3-838ee4cfd5b0) | ![Untitled video (3)](https://github.com/user-attachments/assets/b0f32328-45d6-4ba2-affd-18c53e44d7ec) |
-> **📹 What to Record:**
-> - `drag-blocks.gif`: Show Start → LLM → Output being connected
-> - `run-flow.gif`: Click "Run Flow" and show text result in right pane
-> - `load-template.gif`: Load a saved flow with multiple blocks pre-configured
 
 ---
 
@@ -117,7 +113,7 @@ Deploy to your favorite platform (Vercel, Netlify, etc.):
 
 ## 📚 Documentation
 
-📖 View full documentation & guides on [Notion](https://your-notion-doc-url.com)
+📖 View full documentation & guides on [Notion]([https://your-notion-doc-url.com](https://agreeable-idea-6f3.notion.site/Broq-Documentation-2142e0439528805da5cfdd912d41433d))
 
 ---
 
@@ -163,10 +159,24 @@ LLMs are powerful — but code isn't always the right interface.
 Broq lets people **think in blocks**, not syntax.
 It's a tool for:
 
+* Tinkerers and blocky thinkers
 * Educators teaching AI
 * Makers prototyping ideas
 * Beginners learning LLMs
-* Experts tired of wiring JSON by hand
+
+---
+
+## 📬 Contact Me
+
+Have ideas, feedback, or want to jam on AI tools together?
+
+Reach out directly:
+
+- 🧠 [Twitter / X](https://twitter.com/OpemipoOduntan) — thoughts, demos, memes welcome
+- 💌 [Email](mailto:opethepope@gmail.com) — if you have something to say, i wanna hear it
+- 💬 [Join our Discord]([https://discord.gg/yourdiscord](https://discord.com/invite/py6tw3f28N)) — for contributors & Broq builders
+
+> 🪄 I’m always excited to hear from developers, educators, and curious tinkerers.
 
 ---
 
@@ -174,11 +184,7 @@ It's a tool for:
 
 [MIT](LICENSE) — free to use, fork, remix.
 
-> Built with ❤️ by [@yourname](https://github.com/yourname) and open-source contributors.
-
----
-
-## 🙏 Acknowledgements
+> Built with ❤️ by [@bloomberg-sudo-dev](https://github.com/bloomberg-sudo-dev/).
 
 * 🧱 [Blockly](https://developers.google.com/blockly) – visual block engine
 * 🤖 OpenAI + Anthropic – for GPT & Claude APIs
