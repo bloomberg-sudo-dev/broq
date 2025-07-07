@@ -46,7 +46,7 @@ It’s like **Scratch for prompt engineering** — build GPT pipelines by connec
 
 | Drag & Drop Blocks | Run the Flow | Load Example Template |
 |--------------------|--------------|------------------------|
-| ![drag-blocks.gif](assets/drag-blocks.gif) | ![run-flow.gif](assets/run-flow.gif) | ![load-template.gif](assets/load-template.gif) |
+| ![Untitled video (1)](https://github.com/user-attachments/assets/9ee728eb-34c5-42fe-abd8-d0898f6ab90b) | ![run-flow.gif](assets/run-flow.gif) | ![load-template.gif](assets/load-template.gif) |
 
 > **📹 What to Record:**
 > - `drag-blocks.gif`: Show Start → LLM → Output being connected
