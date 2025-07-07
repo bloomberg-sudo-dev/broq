@@ -166,7 +166,12 @@ export default function BroqLayout() {
       {/* Top Bar - Continuous across entire width */}
       <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-4 py-4 bg-white border-b border-slate-200 dark:bg-slate-900 dark:border-slate-800">
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-3">
+          <a 
+            href="https://broq-home.vercel.app/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+          >
             <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">B</span>
             </div>
@@ -174,7 +179,7 @@ export default function BroqLayout() {
               <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">broq.</h1>
               <p className="text-sm text-slate-500 dark:text-slate-400">Visual Flow Builder</p>
             </div>
-          </div>
+          </a>
         </div>
         <div className="flex items-center gap-2">
           <Button
