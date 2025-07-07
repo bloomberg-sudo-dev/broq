@@ -25,7 +25,7 @@ Here’s your updated and upgraded `README.md` — **fully rewritten** to:
     <img alt="GitHub stars" src="https://img.shields.io/github/stars/bloomberg-sudo-dev/broq?style=for-the-badge" />
   </a>
   <a href="https://discord.com/invite/py6tw3f28N" target="_blank">
-    <img alt="Discord" src="" />
+    <img alt="Join our Discord" src="https://img.shields.io/badge/💬%20Join%20Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" />
   </a>
 </p>
 
