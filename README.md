@@ -1,16 +1,7 @@
-Here’s your updated and upgraded `README.md` — **fully rewritten** to:
-
-* Be more engaging and visual
-* Tell a compelling story about Broq
-* Include **buttons**, **badges**, **GIF instructions**, and **clear user flows**
-* Retain all important technical sections you had
-
----
-
-## ✅ 🔥 Final README: Broq – Visual Flow Builder for LLMs
-
-
-<h1 align="center">🧱 Broq – Scratch for LLMs</h1>
+<h1 align="center">
+  <img src="https://github.com/user-attachments/assets/551e1353-ac1b-41a4-b8cd-f1b1fb6830d4" alt="Broq logo" width="36" style="vertical-align: middle;" />
+  Broq – Scratch for LLMs
+</h1>
 
 <p align="center">
   <b>Visual builder for GPT & Claude workflows using drag-and-drop blocks.</b><br>
