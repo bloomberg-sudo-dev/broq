@@ -9,7 +9,7 @@ Here’s your updated and upgraded `README.md` — **fully rewritten** to:
 
 ## ✅ 🔥 Final README: Broq – Visual Flow Builder for LLMs
 
-````md
+
 <h1 align="center">🧱 Broq – Scratch for LLMs</h1>
 
 <p align="center">
