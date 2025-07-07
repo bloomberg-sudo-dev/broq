@@ -1,8 +1,7 @@
 <h1 align="center">
-  <img src="https://github.com/user-attachments/assets/551e1353-ac1b-41a4-b8cd-f1b1fb6830d4" alt="Broq logo" width="36" style="vertical-align: middle;" />
+  <img src="https://github.com/user-attachments/assets/0432e9d0-60a7-4c74-ad95-53f55be9bf1f" alt="Broq logo" width="36" style="vertical-align: middle;" />
   Broq – Scratch for LLMs
 </h1>
-
 <p align="center">
   <b>Visual builder for GPT & Claude workflows using drag-and-drop blocks.</b><br>
   <i>Open-source, testable, and designed for everyone — no code required.</i>
