@@ -22,10 +22,10 @@ Here’s your updated and upgraded `README.md` — **fully rewritten** to:
     <img alt="Try the Demo" src="https://img.shields.io/badge/%F0%9F%A7%B1%20Try%20Live%20Demo-blue?style=for-the-badge" />
   </a>
   <a href="https://github.com/bloomberg-sudo-dev/broq/" target="_blank"> 
-    <img alt="GitHub stars" src="https://img.shields.io/github/stars/yourusername/broq?style=for-the-badge" />
+    <img alt="GitHub stars" src="https://img.shields.io/github/stars/bloomberg-sudo-dev/broq?style=for-the-badge" />
   </a>
   <a href="https://discord.com/invite/py6tw3f28N" target="_blank">
-    <img alt="Discord" src="https://img.shields.io/discord/yourdiscordid?label=Join%20Community&style=for-the-badge&color=5865F2" />
+    <img alt="Discord" src="" />
   </a>
 </p>
 
