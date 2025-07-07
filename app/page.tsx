@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Play,
@@ -12,6 +12,7 @@ import {
 } from "lucide-react"
 import BlocklyCanvas from "@/components/BlocklyCanvas"
 import { BlocklyToolbar } from "@/components/BlocklyToolbar"
+import { LoadingScreen } from "@/components/LoadingScreen"
 import * as Blockly from "blockly"
 import { toast } from "sonner"
 import { useTheme } from "next-themes"
@@ -24,8 +25,25 @@ export default function BroqLayout() {
   const [flowStatus, setFlowStatus] = useState<FlowStatus>("ready")
   const [workspace, setWorkspace] = useState<Blockly.WorkspaceSvg | null>(null)
   const [isExecuting, setIsExecuting] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [showApp, setShowApp] = useState(false)
   const runFlowCallbackRef = useRef<(() => Promise<void>) | null>(null)
   const { theme, setTheme } = useTheme()
+
+  const loadingDuration = 2500
+
+  // Hide loading screen and show app with fade-in
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+      // Small delay to let loading screen start fading out
+      setTimeout(() => {
+        setShowApp(true)
+      }, 200)
+    }, loadingDuration)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark")
@@ -162,9 +180,12 @@ export default function BroqLayout() {
   }
 
   return (
-    <div className="flex h-screen bg-slate-100 dark:bg-slate-950">
+    <>
+      <LoadingScreen isVisible={isLoading} duration={loadingDuration} />
+      {showApp && (
+        <div className="flex h-screen bg-slate-100 dark:bg-slate-950 app-fade-in">
       {/* Top Bar - Continuous across entire width */}
-      <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-4 py-4 bg-white border-b border-slate-200 dark:bg-slate-900 dark:border-slate-800">
+      <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-4 py-4 bg-white border-b border-slate-200 dark:bg-slate-900 dark:border-slate-800 app-fade-in-delay-1">
         <div className="flex items-center gap-4">
           <a 
             href="https://broq-home.vercel.app/" 
@@ -225,7 +246,7 @@ export default function BroqLayout() {
 
       {/* Left Sidebar */}
       <div
-        className={`w-72 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 transform transition-transform duration-200 pt-20 flex flex-col ${
+        className={`w-72 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 transform transition-transform duration-200 pt-20 flex flex-col app-fade-in-delay-1 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -279,7 +300,7 @@ export default function BroqLayout() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden pt-20">
+      <div className="flex-1 flex flex-col overflow-hidden pt-20 app-fade-in-delay-2">
         {/* Canvas Area */}
         <div className="flex-1 overflow-hidden">
           <BlocklyCanvas 
@@ -290,5 +311,7 @@ export default function BroqLayout() {
         </div>
       </div>
     </div>
+      )}
+    </>
   )
 }
