@@ -172,7 +172,7 @@ Reach out directly:
 
 ## 📜 License
 
-[MIT](LICENSE) — free to use, fork, remix.
+[MIT](https://mit-license.org/) — free to use, fork, remix. 
 
 > Built with ❤️ by [@bloomberg-sudo-dev](https://github.com/bloomberg-sudo-dev/).
 
