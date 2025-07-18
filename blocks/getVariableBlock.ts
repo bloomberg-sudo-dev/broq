@@ -11,7 +11,7 @@ function updateGetVariableDropdown(getVariableBlock: Blockly.Block) {
   const variableNames = new Set<string>();
 
   for (const block of allBlocks) {
-    if (block.type === 'set_variable_block') {
+    if (block.type === 'set_variable_block' || block.type === 'set_value_block') {
       const varName = block.getFieldValue('VAR_NAME');
       if (varName && varName.trim() !== '') {
         variableNames.add(varName.trim());

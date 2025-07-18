@@ -5,6 +5,7 @@ import { javascriptGenerator } from 'blockly/javascript';
 export type BlockOutput = {
   id: string;
   type: string;
+  blockType?: string; // Original block type for display purposes
   value?: string;
   model?: string;
   prompt?: string;
@@ -229,6 +230,7 @@ function extractBlockData(block: Blockly.Block): BlockOutput {
             const parsedData = JSON.parse(generatedData);
             return {
               ...baseData,
+              blockType: parsedData.blockType, // Original block type for display
               conditionType: parsedData.conditionType,
               conditionCode: parsedData.conditionCode, // New boolean expression format
               value: parsedData.value, // Legacy format (for backward compatibility)
@@ -239,19 +241,27 @@ function extractBlockData(block: Blockly.Block): BlockOutput {
         }
         return baseData;
       
-      case 'for_each_line_block':
-        const loopGenerator = javascriptGenerator.forBlock['for_each_line_block'];
-        if (loopGenerator) {
-          const generatedData = loopGenerator(block, javascriptGenerator);
+      case 'if_then_block':
+        // For logic blocks, we need to use the generator to get the full data including child blocks
+        const ifThenGenerator = javascriptGenerator.forBlock['if_then_block'];
+        if (ifThenGenerator) {
+          const generatedData = ifThenGenerator(block, javascriptGenerator);
           if (generatedData && typeof generatedData === 'string') {
             const parsedData = JSON.parse(generatedData);
             return {
               ...baseData,
-              childBlocks: parsedData.childBlocks || []
+              blockType: parsedData.blockType, // Original block type for display
+              conditionType: parsedData.conditionType,
+              conditionCode: parsedData.conditionCode, // New boolean expression format
+              value: parsedData.value, // Legacy format (for backward compatibility)
+              thenBlocks: parsedData.thenBlocks || [],
+              elseBlocks: parsedData.elseBlocks || []
             };
           }
         }
         return baseData;
+      
+
       
       case 'set_variable_block':
         const setVarGenerator = javascriptGenerator.forBlock['set_variable_block'];
@@ -263,6 +273,21 @@ function extractBlockData(block: Blockly.Block): BlockOutput {
               ...baseData,
               name: parsedData.name,
               value: parsedData.value
+            };
+          }
+        }
+        return baseData;
+      
+      case 'set_value_block':
+        const setValueGenerator = javascriptGenerator.forBlock['set_value_block'];
+        if (setValueGenerator) {
+          const generatedData = setValueGenerator(block, javascriptGenerator);
+          if (generatedData && typeof generatedData === 'string') {
+            const parsedData = JSON.parse(generatedData);
+            return {
+              ...baseData,
+              name: parsedData.name,
+              value: parsedData.value // This will be the JavaScript expression from connected block
             };
           }
         }
@@ -345,10 +370,13 @@ function getBlockType(blocklyType: string): string {
       return 'output';
     case 'if_block':
       return 'if';
-    case 'for_each_line_block':
-      return 'for_each_line';
+    case 'if_then_block':
+      return 'if';
+
     case 'set_variable_block':
       return 'set_variable';
+    case 'set_value_block':
+      return 'set_value';
     case 'get_variable_block':
       return 'get_variable';
     case 'variable_reporter_block':
@@ -449,7 +477,7 @@ export function validateFlow(flow: BlockOutput[]): boolean {
 
   // Validate middle blocks and their content
   const middleBlocks = flow.slice(1, -1);
-  const validMiddleTypes = ['text_input', 'variable_input', 'llm', 'if', 'for_each_line', 'set_variable', 'get_variable'];
+  const validMiddleTypes = ['text_input', 'variable_input', 'llm', 'if', 'set_variable', 'set_value', 'get_variable'];
   
   for (let i = 0; i < middleBlocks.length; i++) {
     const block = middleBlocks[i];
@@ -457,7 +485,7 @@ export function validateFlow(flow: BlockOutput[]): boolean {
     
     // Check if block type is valid
     if (!validMiddleTypes.includes(block.type)) {
-      throw new Error(`❌ Invalid block type in position ${blockPosition}.\n\n🔍 Found: ${getBlockDisplayName(block.type)}\n🔍 Allowed: Text Input, LLM Processing, If/Then/Else, For Each Line, Set Variable, and Get Variable blocks\n\n💡 To fix this:\n• Remove the invalid block\n• Replace it with a supported block type\n• Make sure all blocks are properly connected`);
+      throw new Error(`❌ Invalid block type in position ${blockPosition}.\n\n🔍 Found: ${getBlockDisplayName(block.type)}\n🔍 Allowed: Text Input, LLM Processing, If/Then, Set Variable, and Get Variable blocks\n\n💡 To fix this:\n• Remove the invalid block\n• Replace it with a supported block type\n• Make sure all blocks are properly connected`);
     }
     
     // Validate block-specific content
@@ -529,6 +557,7 @@ function getBlockCategory(blockType: string): BlockCategory {
     case 'boolean_not':
       return 'logic';
     case 'set_variable':
+    case 'set_value':
     case 'get_variable':
     case 'variable_reporter':
     case 'math_add':
@@ -609,9 +638,7 @@ function getBlockDisplayName(blockType: string): string {
     case 'output':
       return 'Output Result';
     case 'if':
-      return 'If/Then/Else';
-    case 'for_each_line':
-      return 'For Each Line';
+      return 'If Block';
     case 'set_variable':
       return 'Set Variable';
     case 'get_variable':

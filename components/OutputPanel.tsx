@@ -38,7 +38,9 @@ function getBlockLabel(blockType?: string): string {
       return 'LLM Block';
     case 'output':
       return 'Final Output';
-    case 'if':
+    case 'if_then':
+      return 'If/Then';
+    case 'if_then_else':
       return 'If/Then/Else';
     case 'for_each_line':
       return 'For Each Line';

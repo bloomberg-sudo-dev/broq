@@ -7,11 +7,13 @@ import { textInputBlock, textInputGenerator, textInputBlockCategory } from '../b
 import { llmBlock, llmGenerator, llmBlockCategory } from '../blocks/llmBlock';
 import { outputBlock, outputGenerator, outputBlockCategory } from '../blocks/outputBlock';
 import { ifBlock, ifGenerator, ifBlockCategory } from '../blocks/ifBlock';
-import { forEachLineBlock, forEachLineGenerator, forEachLineBlockCategory } from '../blocks/forEachLineBlock';
+import { ifThenBlock, ifThenGenerator, ifThenBlockCategory } from '../blocks/ifThenBlock';
 import { setVariableBlock, setVariableGenerator, setVariableBlockCategory } from '../blocks/setVariableBlock';
+import { setValueBlock, setValueGenerator, setValueBlockCategory } from '../blocks/setValueBlock';
 import { getVariableBlock, getVariableGenerator, getVariableBlockCategory } from '../blocks/getVariableBlock';
 import { variableReporterBlock, variableReporterGenerator, variableReporterBlockCategory } from '../blocks/variableReporterBlock';
 import { valueInputBlock, valueInputGenerator, valueInputBlockCategory } from '../blocks/valueInputBlock';
+import { valueOutputBlock, valueOutputGenerator, valueOutputBlockCategory } from '../blocks/valueOutputBlock';
 import { variableInputBlock, variableInputGenerator, variableInputBlockCategory } from '../blocks/variableInputBlock';
 
 // Import new hexagonal boolean operator blocks
@@ -33,11 +35,13 @@ export function registerBlocks() {
   Blockly.Blocks['llm_block'] = llmBlock;
   Blockly.Blocks['output_block'] = outputBlock;
   Blockly.Blocks['if_block'] = ifBlock;
-  Blockly.Blocks['for_each_line_block'] = forEachLineBlock;
+  Blockly.Blocks['if_then_block'] = ifThenBlock;
   Blockly.Blocks['set_variable_block'] = setVariableBlock;
+  Blockly.Blocks['set_value_block'] = setValueBlock;
   Blockly.Blocks['get_variable_block'] = getVariableBlock;
   Blockly.Blocks['variable_reporter_block'] = variableReporterBlock;
   Blockly.Blocks['value_input_block'] = valueInputBlock;
+  Blockly.Blocks['value_output_block'] = valueOutputBlock;
   Blockly.Blocks['variable_input_block'] = variableInputBlock;
 
   // Register new hexagonal boolean operator blocks
@@ -70,12 +74,16 @@ export function registerBlocks() {
     return ifGenerator(block, generator);
   };
 
-  javascriptGenerator.forBlock['for_each_line_block'] = function(block, generator) {
-    return forEachLineGenerator(block, generator);
+  javascriptGenerator.forBlock['if_then_block'] = function(block, generator) {
+    return ifThenGenerator(block, generator);
   };
 
   javascriptGenerator.forBlock['set_variable_block'] = function(block, generator) {
     return setVariableGenerator(block, generator);
+  };
+
+  javascriptGenerator.forBlock['set_value_block'] = function(block, generator) {
+    return setValueGenerator(block, generator);
   };
 
   javascriptGenerator.forBlock['get_variable_block'] = function(block, generator) {
@@ -88,6 +96,10 @@ export function registerBlocks() {
 
   javascriptGenerator.forBlock['value_input_block'] = function(block, generator) {
     return valueInputGenerator(block);
+  };
+
+  javascriptGenerator.forBlock['value_output_block'] = function(block, generator) {
+    return valueOutputGenerator(block, generator);
   };
 
   javascriptGenerator.forBlock['variable_input_block'] = function(block) {
@@ -138,13 +150,19 @@ export const toolboxConfiguration = {
       kind: 'category', 
       name: 'Input',
       colour: '#5C6BC0',
-      contents: [textInputBlockCategory, variableInputBlockCategory]
+      contents: [textInputBlockCategory, variableInputBlockCategory, valueInputBlockCategory, valueOutputBlockCategory]
     },
     {
       kind: 'category',
       name: 'Process',
       colour: '#D1FAE5',
       contents: [llmBlockCategory]
+    },
+    {
+      kind: 'category',
+      name: 'Logic',
+      colour: '#FFE082',
+      contents: [ifThenBlockCategory, ifBlockCategory]
     },
     {
       kind: 'category',
@@ -162,7 +180,7 @@ export const toolboxConfiguration = {
       kind: 'category',
       name: 'Variables',
       colour: '#FFCC80',
-      contents: [setVariableBlockCategory, getVariableBlockCategory, variableReporterBlockCategory]
+      contents: [setVariableBlockCategory, setValueBlockCategory, getVariableBlockCategory, variableReporterBlockCategory]
     },
     {
       kind: 'category',

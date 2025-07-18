@@ -18,11 +18,11 @@ function getBlockDisplayName(blockType: string): string {
     case 'output':
       return 'Output Result';
     case 'if':
-      return 'If/Then/Else';
-    case 'for_each_line':
-      return 'For Each Line';
+      return 'If Block';
     case 'set_variable':
       return 'Set Variable';
+    case 'set_value':
+      return 'Set Value';
     case 'get_variable':
       return 'Get Variable';
     case 'variable_reporter':
@@ -229,19 +229,19 @@ async function executeBlock(
       // Evaluate the connected value expression
       let variableInputValue = '';
       try {
-        if (block.value && block.value !== '"no input"') {
-          // Handle JavaScript expressions from connected blocks (like Get Variable)
-          if (block.value.includes('variables[')) {
-            // This is a variable reference - evaluate it safely
-            try {
-              // Create a safe evaluation context
-              const evaluationFunction = new Function('variables', `return ${block.value}`);
-              variableInputValue = evaluationFunction(variables) || '';
-            } catch (evalError) {
-              console.error('Error evaluating variable expression:', evalError);
-              variableInputValue = 'variable not found';
-            }
-          } else if (block.value.startsWith('"') && block.value.endsWith('"')) {
+                 if (block.value && block.value !== '"no input"') {
+           // Handle JavaScript expressions from connected blocks (like Get Variable, Value Output)
+           if (block.value.includes('variables[') || block.value.includes('currentData')) {
+             // This is a variable reference or flow output reference - evaluate it safely
+             try {
+               // Create a safe evaluation context
+               const evaluationFunction = new Function('variables', 'currentData', `return ${block.value}`);
+               variableInputValue = evaluationFunction(variables, currentData) || '';
+             } catch (evalError) {
+               console.error('Error evaluating expression:', evalError);
+               variableInputValue = 'evaluation error';
+             }
+           } else if (block.value.startsWith('"') && block.value.endsWith('"')) {
             // This is a quoted string literal - remove quotes
             variableInputValue = block.value.slice(1, -1);
           } else {
@@ -365,10 +365,17 @@ async function executeBlock(
           };
         }
         
+        // Get the appropriate display name based on block type
+        const displayName = block.blockType === 'if_then' ? 'If/Then' : 
+                          block.blockType === 'if_then_else' ? 'If/Then/Else' : 
+                          'If Block';
+        
+
+        
         return {
           blockResult: { 
-            output: `Condition: ${conditionResult ? 'TRUE' : 'FALSE'} → Executed ${branchName} branch\nResult: ${branchResult.data}`,
-            blockType: 'if',
+            output: `${displayName} - Condition: ${conditionResult ? 'TRUE' : 'FALSE'} → Executed ${branchName} branch\nResult: ${branchResult.data}`,
+            blockType: block.blockType === 'if_then' ? 'if_then' : 'if_then_else', // Use specific block type for UI
             ...combinedMetrics
           },
           data: branchResult.data,
@@ -376,10 +383,17 @@ async function executeBlock(
           childResults: branchResult.results
         };
       } else {
+        // Get the appropriate display name based on block type
+        const displayName = block.blockType === 'if_then' ? 'If/Then' : 
+                          block.blockType === 'if_then_else' ? 'If/Then/Else' : 
+                          'If Block';
+        
+
+        
         return {
           blockResult: { 
-            output: `Condition: ${conditionResult ? 'TRUE' : 'FALSE'} → ${branchName} branch (empty)`,
-            blockType: 'if'
+            output: `${displayName} - Condition: ${conditionResult ? 'TRUE' : 'FALSE'} → ${branchName} branch (empty)`,
+            blockType: block.blockType === 'if_then' ? 'if_then' : 'if_then_else' // Use specific block type for UI
           },
           data: currentData,
           variables: updatedVariables
@@ -444,6 +458,58 @@ async function executeBlock(
         blockResult: { 
           output: `Set variable "${varName}" = "${varValue}"`,
           blockType: 'set_variable'
+        },
+        data: currentData, // Variables don't change the data flow
+        variables: updatedVariables
+      };
+
+    case 'set_value':
+      if (!block.name || block.name.trim() === '') {
+        throw new Error('❌ Set Value block has no variable name.\n\n💡 To fix this:\n• Enter a variable name\n• Use letters, numbers, and underscores only');
+      }
+
+      const setValueVarName = block.name.trim();
+      let setValueResult = '';
+      
+      try {
+                 if (block.value && block.value !== '""') {
+           // Handle JavaScript expressions from connected blocks (like Get Variable, Value Output)
+           if (block.value.includes('variables[') || block.value.includes('currentData')) {
+             // This is a variable reference or flow output reference - evaluate it safely
+             try {
+               const evaluationFunction = new Function('variables', 'currentData', `return ${block.value}`);
+               setValueResult = evaluationFunction(variables, currentData) || '';
+             } catch (evalError) {
+               console.error('Error evaluating expression:', evalError);
+               setValueResult = 'evaluation error';
+             }
+           } else if (block.value.startsWith('"') && block.value.endsWith('"')) {
+            // This is a quoted string literal - remove quotes
+            setValueResult = block.value.slice(1, -1);
+          } else {
+            // This might be a number or other literal value
+            try {
+              const evaluationFunction = new Function(`return ${block.value}`);
+              setValueResult = String(evaluationFunction());
+            } catch (evalError) {
+              // If evaluation fails, treat as string
+              setValueResult = block.value;
+            }
+          }
+        } else {
+          setValueResult = '';
+        }
+      } catch (error) {
+        console.error('Error evaluating set value:', error);
+        setValueResult = 'evaluation error';
+      }
+      
+      updatedVariables[setValueVarName] = setValueResult;
+
+      return {
+        blockResult: { 
+          output: `Set variable "${setValueVarName}" = "${setValueResult}" (from connected value)`,
+          blockType: 'set_value'
         },
         data: currentData, // Variables don't change the data flow
         variables: updatedVariables

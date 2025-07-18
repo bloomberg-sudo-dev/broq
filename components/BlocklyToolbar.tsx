@@ -93,6 +93,17 @@ export function BlocklyToolbar({
           </button>
 
           <button
+            onClick={() => addBlock('value_output_block')}
+            className="flex items-center gap-1.5 px-2 py-2 rounded-lg border bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-950/50 dark:hover:bg-orange-900/50 dark:text-orange-300 dark:border-orange-800 transition-colors text-xs"
+            title="Use the current flow data as input to other blocks"
+          >
+            <FileOutput className="w-3.5 h-3.5" />
+            <span>Value Output</span>
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 gap-2">
+          <button
             onClick={() => addBlock('variable_input_block')}
             className="flex items-center gap-1.5 px-2 py-2 rounded-lg border bg-purple-50 hover:bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-950/50 dark:hover:bg-purple-900/50 dark:text-purple-300 dark:border-purple-800 transition-colors text-xs"
             title="Connect a Get Variable block or other value to use as input"
@@ -109,23 +120,21 @@ export function BlocklyToolbar({
         
         <div className="grid grid-cols-1 gap-2">
           <button
-            onClick={() => addBlock('if_block')}
+            onClick={() => addBlock('if_then_block')}
             className="flex items-center gap-1.5 px-2 py-2 rounded-lg border bg-amber-50 hover:bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-950/50 dark:hover:bg-amber-900/50 dark:text-amber-300 dark:border-amber-800 transition-colors text-xs"
-            title="Conditional logic - execute blocks based on a condition"
+            title="Conditional logic - execute blocks only if condition is true"
           >
             <GitBranch className="w-3.5 h-3.5" />
-            <span>If/Then/Else</span>
+            <span>If/Then</span>
           </button>
-        </div>
-
-        <div className="grid grid-cols-1 gap-2">
+          
           <button
-            onClick={() => addBlock('for_each_line_block')}
-            className="flex items-center gap-1.5 px-2 py-2 rounded-lg border bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border-indigo-200 dark:bg-indigo-950/50 dark:hover:bg-indigo-900/50 dark:text-indigo-300 dark:border-indigo-800 transition-colors text-xs"
-            title="Repeat blocks for each line of text"
+            onClick={() => addBlock('if_block')}
+            className="flex items-center gap-1.5 px-2 py-2 rounded-lg border bg-amber-50 hover:bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-950/50 dark:hover:bg-amber-900/50 dark:text-amber-300 dark:border-amber-800 transition-colors text-xs"
+            title="Conditional logic - execute different blocks based on true/false condition"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span>For Each Line</span>
+            <Shuffle className="w-3.5 h-3.5" />
+            <span>If/Then/Else</span>
           </button>
         </div>
       </div>
@@ -219,6 +228,17 @@ export function BlocklyToolbar({
             <span>Set</span>
           </button>
 
+          <button
+            onClick={() => addBlock('set_value_block')}
+            className="flex items-center gap-1.5 px-2 py-2 rounded-lg border bg-amber-50 hover:bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-950/50 dark:hover:bg-amber-900/50 dark:text-amber-300 dark:border-amber-800 transition-colors text-xs"
+            title="Set a variable using a connected value (Get Variable, Value Input, etc.)"
+          >
+            <Link className="w-3.5 h-3.5" />
+            <span>Set Value</span>
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 gap-2">
           <button
             onClick={() => addBlock('get_variable_block')}
             className="flex items-center gap-1.5 px-2 py-2 rounded-lg border bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-950/50 dark:hover:bg-orange-900/50 dark:text-orange-300 dark:border-orange-800 transition-colors text-xs"
