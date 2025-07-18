@@ -185,7 +185,6 @@ Reach out directly:
 * 🧱 [Blockly](https://developers.google.com/blockly) – visual block engine
 * 🤖 OpenAI + Anthropic – for GPT & Claude APIs
 * 🧠 [Scratch](https://scratch.mit.edu) – for inspiring creativity with blocks
-```
 
 ## ✨ **Key Updates Made:**
 
