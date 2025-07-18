@@ -46,6 +46,8 @@ function getBlockLabel(blockType?: string): string {
       return 'Set Variable';
     case 'get_variable':
       return 'Get Variable';
+    case 'variable_reporter':
+      return 'Variable Reporter';
     default:
       return 'Block';
   }

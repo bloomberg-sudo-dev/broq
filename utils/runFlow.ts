@@ -1,5 +1,6 @@
 import { BlockOutput } from './extractFlow';
 import { evaluateCondition, VariableStore } from './conditionEvaluator';
+import { evaluateOperator, OperatorType, getOperatorDisplayName } from './operatorEvaluator';
 
 /**
  * Get user-friendly display name for block types
@@ -10,6 +11,8 @@ function getBlockDisplayName(blockType: string): string {
       return 'When Flow Runs';
     case 'text_input':
       return 'Text Input';
+    case 'variable_input':
+      return 'Variable Input';
     case 'llm':
       return 'LLM Processing';
     case 'output':
@@ -22,6 +25,40 @@ function getBlockDisplayName(blockType: string): string {
       return 'Set Variable';
     case 'get_variable':
       return 'Get Variable';
+    case 'variable_reporter':
+      return 'Variable Reporter';
+    // Math operators
+    case 'math_add':
+      return 'Add';
+    case 'math_subtract':
+      return 'Subtract';
+    case 'math_multiply':
+      return 'Multiply';
+    case 'math_divide':
+      return 'Divide';
+    // Comparison operators
+    case 'comparison_equals':
+      return 'Equals';
+    case 'comparison_not_equals':
+      return 'Not Equals';
+    case 'comparison_greater_than':
+      return 'Greater Than';
+    case 'comparison_less_than':
+      return 'Less Than';
+    // Logical operators
+    case 'logical_and':
+      return 'AND';
+    case 'logical_or':
+      return 'OR';
+    case 'logical_not':
+      return 'NOT';
+    // String operators
+    case 'string_concatenate':
+      return 'Concatenate';
+    case 'string_substring':
+      return 'Substring';
+    case 'string_length':
+      return 'Length';
     default:
       return blockType;
   }
@@ -49,7 +86,7 @@ interface FlowResults {
 }
 
 /**
- * Enhanced template processor that handles {{input}}, {{line}}, and {{get:varName}}
+ * Enhanced template processor that handles {{input}}, {{line}}, and {{getVar("varName")}}
  */
 function processTemplate(template: string, input: string, variables: VariableStore = {}, lineContext?: string): string {
   let processed = template;
@@ -62,7 +99,13 @@ function processTemplate(template: string, input: string, variables: VariableSto
     processed = processed.replace(/{{line}}/g, lineContext);
   }
   
-  // Replace {{get:varName}} with variable values
+  // Replace {{getVar("varName")}} with variable values
+  processed = processed.replace(/{{getVar\("([a-zA-Z_][a-zA-Z0-9_]*)"\)}}/g, (match, varName) => {
+    const value = variables[varName];
+    return value !== undefined ? value : match; // Keep original if variable not found
+  });
+  
+  // Also support legacy {{get:varName}} syntax for backward compatibility
   processed = processed.replace(/{{get:([a-zA-Z_][a-zA-Z0-9_]*)}}/g, (match, varName) => {
     const value = variables[varName];
     return value !== undefined ? value : match; // Keep original if variable not found
@@ -182,6 +225,49 @@ async function executeBlock(
         variables: updatedVariables
       };
 
+    case 'variable_input':
+      // Evaluate the connected value expression
+      let variableInputValue = '';
+      try {
+        if (block.value && block.value !== '"no input"') {
+          // Handle JavaScript expressions from connected blocks (like Get Variable)
+          if (block.value.includes('variables[')) {
+            // This is a variable reference - evaluate it safely
+            try {
+              // Create a safe evaluation context
+              const evaluationFunction = new Function('variables', `return ${block.value}`);
+              variableInputValue = evaluationFunction(variables) || '';
+            } catch (evalError) {
+              console.error('Error evaluating variable expression:', evalError);
+              variableInputValue = 'variable not found';
+            }
+          } else if (block.value.startsWith('"') && block.value.endsWith('"')) {
+            // This is a quoted string literal - remove quotes
+            variableInputValue = block.value.slice(1, -1);
+          } else {
+            // This might be a number or other literal value
+            try {
+              const evaluationFunction = new Function(`return ${block.value}`);
+              variableInputValue = String(evaluationFunction());
+            } catch (evalError) {
+              // If evaluation fails, treat as string
+              variableInputValue = block.value;
+            }
+          }
+        } else {
+          variableInputValue = 'no input';
+        }
+      } catch (error) {
+        console.error('Error evaluating variable input:', error);
+        variableInputValue = 'evaluation error';
+      }
+      
+      return {
+        blockResult: { output: variableInputValue, blockType: 'variable_input' },
+        data: variableInputValue,
+        variables: updatedVariables
+      };
+
     case 'llm':
       if (!block.prompt || block.prompt.trim() === '') {
         throw new Error('❌ LLM Processing block has no prompt.\n\n💡 To fix this:\n• Click on the LLM Processing block\n• Enter a prompt in the "Prompt template" field\n• Use {{input}} to reference data from previous blocks');
@@ -214,17 +300,48 @@ async function executeBlock(
       };
 
     case 'if':
-      if (!block.conditionType || !block.value) {
-        throw new Error('❌ If block has incomplete condition.\n\n💡 To fix this:\n• Set the condition type and value\n• Make sure the condition is properly configured');
+      // Handle both new boolean expression format and legacy condition format
+      let conditionResult: boolean;
+      
+      if (block.conditionType === 'boolean_expression' && block.conditionCode) {
+                 // New format: evaluate JavaScript boolean expression
+         try {
+           // Process template variables in the condition code
+           const processedConditionCode = processTemplate(block.conditionCode, currentData, variables);
+           
+           // Create a safe evaluation context
+           const evaluationContext = {
+             variables,
+             currentData,
+             // Helper functions that can be used in expressions
+             length: (str: string) => str?.length || 0,
+             contains: (str: string, search: string) => str?.includes(search) || false,
+           };
+           
+           // Safely evaluate the boolean expression
+           // Note: This is a simplified evaluation - in production, you might want to use a proper expression evaluator
+           conditionResult = Function(
+             'variables', 'currentData', 'length', 'contains',
+             `"use strict"; return (${processedConditionCode});`
+           )(evaluationContext.variables, evaluationContext.currentData, evaluationContext.length, evaluationContext.contains);
+           
+           // Ensure result is boolean
+           conditionResult = Boolean(conditionResult);
+         } catch (error: any) {
+           console.error('Error evaluating boolean expression:', error);
+           throw new Error(`❌ Error in condition: ${error.message}\n\n💡 Check your boolean expression for syntax errors`);
+         }
+      } else if (block.conditionType && block.value) {
+        // Legacy format: use the existing condition evaluator
+        conditionResult = await evaluateCondition(
+          block.conditionType, 
+          block.value, 
+          currentData, 
+          variables
+        );
+      } else {
+        throw new Error('❌ If block has incomplete condition.\n\n💡 To fix this:\n• Connect a boolean block to the condition input\n• Or set a legacy condition type and value');
       }
-
-      // Evaluate the condition
-      const conditionResult = await evaluateCondition(
-        block.conditionType, 
-        block.value, 
-        currentData, 
-        variables
-      );
 
       // Execute the appropriate branch
       const branchBlocks = conditionResult ? (block.thenBlocks || []) : (block.elseBlocks || []);
@@ -333,15 +450,15 @@ async function executeBlock(
       };
 
     case 'get_variable':
-      if (!block.name || block.name.trim() === '') {
-        throw new Error('❌ Get Variable block has no variable name.\n\n💡 To fix this:\n• Enter a variable name that was previously set');
+      if (!block.name || block.name === '') {
+        throw new Error('❌ Get Variable block has no variable selected.\n\n💡 To fix this:\n• Select a variable from the dropdown\n• Make sure you have Set Variable blocks in your flow');
       }
 
-      const getVarName = block.name.trim();
+      const getVarName = block.name;
       const retrievedValue = variables[getVarName];
       
       if (retrievedValue === undefined) {
-        throw new Error(`❌ Variable "${getVarName}" not found.\n\n💡 To fix this:\n• Make sure you set the variable before getting it\n• Check the variable name spelling`);
+        throw new Error(`❌ Variable "${getVarName}" not found.\n\n💡 To fix this:\n• Make sure you set the variable before getting it\n• Check that the Set Variable block comes before this Get Variable block in the flow`);
       }
 
       return {
@@ -352,6 +469,66 @@ async function executeBlock(
         data: retrievedValue, // Get variable changes the data flow to the variable value
         variables: updatedVariables
       };
+
+    case 'variable_reporter':
+      if (!block.name || block.name.trim() === '') {
+        throw new Error('❌ Variable Reporter has no variable selected.\n\n💡 To fix this:\n• Select a variable from the dropdown');
+      }
+
+      const reporterVarName = block.name.trim();
+      const reporterValue = variables[reporterVarName];
+      
+      if (reporterValue === undefined) {
+        throw new Error(`❌ Variable "${reporterVarName}" not found.\n\n💡 To fix this:\n• Make sure the variable is set before using this reporter\n• Check that the variable still exists`);
+      }
+
+      return {
+        blockResult: { 
+          output: `Variable "${reporterVarName}" = "${reporterValue}"`,
+          blockType: 'variable_reporter'
+        },
+        data: reporterValue, // Variable reporter outputs the variable value
+        variables: updatedVariables
+      };
+
+    // Math Operators
+    case 'math_add':
+    case 'math_subtract':
+    case 'math_multiply':
+    case 'math_divide':
+    // Comparison Operators
+    case 'comparison_equals':
+    case 'comparison_not_equals':
+    case 'comparison_greater_than':
+    case 'comparison_less_than':
+    // Logical Operators
+    case 'logical_and':
+    case 'logical_or':
+    case 'logical_not':
+    // String Operators
+    case 'string_concatenate':
+    case 'string_substring':
+    case 'string_length':
+      if (!block.operatorType) {
+        throw new Error(`❌ ${getBlockDisplayName(block.type)} operator has no operator type.\n\n💡 To fix this:\n• Delete and recreate the block\n• Check that the block is properly configured`);
+      }
+
+      try {
+        const inputs = await evaluateInputValues(block, currentData, variables, lineContext);
+        const result = await evaluateOperator(block.operatorType as OperatorType, inputs, variables);
+        
+        return {
+          blockResult: {
+            output: `${getOperatorDisplayName(block.operatorType as OperatorType)}: ${String(result.value)}`,
+            blockType: block.type
+          },
+          data: String(result.value), // Convert operator result to string for data flow
+          variables: updatedVariables
+        };
+      } catch (error) {
+        console.error(`Error evaluating ${block.type} operator:`, error);
+        throw new Error(`❌ ${getBlockDisplayName(block.type)} operator error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      }
 
     case 'output':
       return {
@@ -436,4 +613,53 @@ export function formatResults(results: FlowResults): string {
   }
   
   return output;
+}
+
+/**
+ * Evaluate input values for operator blocks
+ */
+async function evaluateInputValues(
+  block: BlockOutput,
+  currentData: string,
+  variables: VariableStore,
+  lineContext?: string
+): Promise<string[]> {
+  const inputs: string[] = [];
+  
+  // Handle different input configurations based on operator type
+  if (block.operatorType) {
+    switch (block.operatorType) {
+      case 'add':
+      case 'subtract':
+      case 'multiply':
+      case 'divide':
+      case 'equals':
+      case 'not_equals':
+      case 'greater_than':
+      case 'less_than':
+      case 'and':
+      case 'or':
+      case 'concatenate':
+        // Two-input operators
+        inputs.push(block.inputA || '');
+        inputs.push(block.inputB || '');
+        break;
+        
+      case 'substring':
+        // Three-input operator
+        inputs.push(block.inputText || '');
+        inputs.push(block.inputStart || '0');
+        inputs.push(block.inputEnd || '0');
+        break;
+        
+      case 'not':
+      case 'length':
+        // Single-input operators
+        inputs.push(block.inputA || block.inputText || '');
+        break;
+    }
+  }
+  
+  // Process templates in all inputs
+  return inputs.map(input => processTemplate(input, currentData, variables, lineContext));
 } 

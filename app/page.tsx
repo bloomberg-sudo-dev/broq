@@ -16,7 +16,6 @@ import { LoadingScreen } from "@/components/LoadingScreen"
 import * as Blockly from "blockly"
 import { toast } from "sonner"
 import { useTheme } from "next-themes"
-
 // Status types
 type FlowStatus = "ready" | "executing" | "complete" | "error"
 
@@ -44,6 +43,8 @@ export default function BroqLayout() {
 
     return () => clearTimeout(timer)
   }, [])
+
+
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark")
@@ -255,7 +256,7 @@ export default function BroqLayout() {
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Click to add blocks to your flow</p>
         </div>
         
-        <div className="flex-1">
+        <div className="flex-1 overflow-y-auto">
           <BlocklyToolbar workspace={workspace} />
         </div>
         

@@ -262,4 +262,143 @@
   fill: #fff;
   font-family: inherit;
   font-size: inherit;
+}
+
+/* Variable Reporter Block Styling - Circular appearance */
+.blocklyPath[data-block-type="variable_reporter_block"],
+g[data-block-type="variable_reporter_block"] .blocklyPath {
+  rx: 20px !important;
+  ry: 20px !important;
+  border-radius: 20px !important;
+}
+
+/* Make Variable Reporter blocks appear more rounded */
+g[data-id*="variable_reporter_block"] .blocklyPath,
+.blocklyBlockBackground[data-block-type="variable_reporter_block"] {
+  rx: 25px;
+  ry: 25px;
+  border-radius: 25px;
+}
+
+/* Additional styling for variable reporter blocks */
+.blocklyPath[fill="#FF6B35"] {
+  rx: 20px;
+  ry: 20px;
+  stroke-width: 2px;
+  stroke: #E55A2B;
+}
+
+/* Make the variable reporter blocks smaller and more circular */
+g.blocklyDraggable[data-id*="variable_reporter"] .blocklyPath {
+  rx: 30px !important;
+  ry: 30px !important;
+}
+
+/* Ensure text in variable reporter blocks is centered */
+g.blocklyDraggable[data-id*="variable_reporter"] .blocklyText {
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* Operator Block Styling - Circular appearance */
+/* Math Operators - Light Blue */
+.blocklyPath[fill="#87CEEB"],
+g[data-id*="math_"] .blocklyPath {
+  rx: 20px !important;
+  ry: 20px !important;
+  stroke-width: 2px;
+  stroke: #5F9EA0;
+}
+
+/* Comparison and Logical Operators - Green */
+.blocklyPath[fill="#228B22"],
+g[data-id*="comparison_"] .blocklyPath,
+g[data-id*="logical_"] .blocklyPath {
+  rx: 20px !important;
+  ry: 20px !important;
+  stroke-width: 2px;
+  stroke: #006400;
+}
+
+/* String Operators - Purple */
+.blocklyPath[fill="#9932CC"],
+g[data-id*="string_"] .blocklyPath {
+  rx: 20px !important;
+  ry: 20px !important;
+  stroke-width: 2px;
+  stroke: #800080;
+}
+
+/* Make all operator blocks appear more rounded */
+g[data-id*="math_"] .blocklyPath,
+g[data-id*="comparison_"] .blocklyPath,
+g[data-id*="logical_"] .blocklyPath,
+g[data-id*="string_"] .blocklyPath {
+  rx: 25px;
+  ry: 25px;
+  border-radius: 25px;
+}
+
+/* Ensure text in operator blocks is centered */
+g[data-id*="math_"] .blocklyText,
+g[data-id*="comparison_"] .blocklyText,
+g[data-id*="logical_"] .blocklyText,
+g[data-id*="string_"] .blocklyText {
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* Boolean operators (hexagonal blocks) - New boolean blocks that output Boolean type */
+.blocklyPathDark[data-block-type*="boolean_"]:not([data-block-type*="block"]) path {
+  stroke: #4CAF50 !important;
+  stroke-width: 2px;
+}
+
+.blocklyPathLight[data-block-type*="boolean_"]:not([data-block-type*="block"]) path {
+  fill: #E8F5E8 !important;
+  stroke: #4CAF50 !important;
+  stroke-width: 2px;
+}
+
+/* Boolean comparison operators */
+.blocklyPathDark[data-block-type="boolean_equals_block"] path,
+.blocklyPathDark[data-block-type="boolean_not_equals_block"] path,
+.blocklyPathDark[data-block-type="boolean_greater_than_block"] path,
+.blocklyPathDark[data-block-type="boolean_less_than_block"] path {
+  stroke: #4CAF50 !important;
+  fill: #2E7D32 !important;
+}
+
+.blocklyPathLight[data-block-type="boolean_equals_block"] path,
+.blocklyPathLight[data-block-type="boolean_not_equals_block"] path,
+.blocklyPathLight[data-block-type="boolean_greater_than_block"] path,
+.blocklyPathLight[data-block-type="boolean_less_than_block"] path {
+  fill: #E8F5E8 !important;
+  stroke: #4CAF50 !important;
+}
+
+/* Boolean logical operators */
+.blocklyPathDark[data-block-type="boolean_and_block"] path,
+.blocklyPathDark[data-block-type="boolean_or_block"] path,
+.blocklyPathDark[data-block-type="boolean_not_block"] path {
+  stroke: #2196F3 !important;
+  fill: #1565C0 !important;
+}
+
+.blocklyPathLight[data-block-type="boolean_and_block"] path,
+.blocklyPathLight[data-block-type="boolean_or_block"] path,
+.blocklyPathLight[data-block-type="boolean_not_block"] path {
+  fill: #E3F2FD !important;
+  stroke: #2196F3 !important;
+}
+
+/* Make boolean blocks hexagonal */
+.blocklyBlock[data-output-type="Boolean"] .blocklyPath {
+  border-radius: 0 !important;
+}
+
+/* Text centering for boolean blocks */
+.blocklyText[data-block-type*="boolean_"] {
+  text-anchor: middle !important;
+  alignment-baseline: central !important;
 } 

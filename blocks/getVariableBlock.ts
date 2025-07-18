@@ -1,52 +1,115 @@
 import * as Blockly from 'blockly';
 import { javascriptGenerator } from 'blockly/javascript';
 
+// Function to scan workspace for Set Variable blocks and update Get Variable dropdown
+function updateGetVariableDropdown(getVariableBlock: Blockly.Block) {
+  const workspace = getVariableBlock.workspace;
+  if (!workspace) return;
+
+  // Find all Set Variable blocks in the workspace
+  const allBlocks = workspace.getAllBlocks();
+  const variableNames = new Set<string>();
+
+  for (const block of allBlocks) {
+    if (block.type === 'set_variable_block') {
+      const varName = block.getFieldValue('VAR_NAME');
+      if (varName && varName.trim() !== '') {
+        variableNames.add(varName.trim());
+      }
+    }
+  }
+
+  // Get the dropdown field
+  const dropdown = getVariableBlock.getField('VAR_NAME') as Blockly.FieldDropdown;
+  if (!dropdown) return;
+
+  // Create options array
+  const options: [string, string][] = [["choose variable...", ""]];
+  
+  // Add discovered variables
+  const sortedVariables = Array.from(variableNames).sort();
+  for (const varName of sortedVariables) {
+    options.push([varName, varName]);
+  }
+
+  // Get current value to preserve it if possible
+  const currentValue = dropdown.getValue();
+
+  // Update the dropdown options
+  (dropdown as any).menuGenerator_ = options;
+
+  // Preserve current selection if it still exists, otherwise reset to empty
+  const stillExists = options.some(([, value]) => value === currentValue);
+  if (!stillExists && currentValue !== '') {
+    dropdown.setValue('');
+  }
+}
+
+// Function to update all Get Variable dropdowns in all workspaces
+export function updateAllGetVariableDropdowns() {
+  const workspaces = Blockly.Workspace.getAll();
+  
+  for (const workspace of workspaces) {
+    const blocks = workspace.getAllBlocks();
+    
+    for (const block of blocks) {
+      if (block.type === 'get_variable_block') {
+        updateGetVariableDropdown(block);
+      }
+    }
+  }
+}
+
 // Define the Get Variable block
 export const getVariableBlock = {
   init: function(this: Blockly.Block) {
     this.jsonInit({
       "type": "get_variable_block",
-      "message0": "📖 Get variable %1",
+      "message0": "📖 Get %1",
       "args0": [
         {
-          "type": "field_input",
+          "type": "field_dropdown",
           "name": "VAR_NAME",
-          "text": "name"
+          "options": [["choose variable...", ""]]
         }
       ],
       "output": "String",
       "colour": "#FFCC80",
-      "tooltip": "Get the value of a variable (use in prompts as {{get:name}})",
+      "tooltip": "Get the value of a variable",
       "helpUrl": ""
     });
 
-    // Add validation
+    // Update dropdown options when the block is created or workspace changes
     this.setOnChange(function(this: Blockly.Block, changeEvent: Blockly.Events.Abstract) {
+      updateGetVariableDropdown(this);
+      
       const varName = this.getFieldValue('VAR_NAME');
-      if (!varName || varName.trim() === '') {
-        this.setWarningText('Variable name cannot be empty');
-      } else if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(varName.trim())) {
-        this.setWarningText('Variable name must start with letter or underscore');
+      if (!varName || varName === '') {
+        this.setWarningText('Please select a variable');
+        this.setTooltip('Select a variable from the dropdown');
       } else {
         this.setWarningText(null);
-        // Update tooltip with usage example
-        this.setTooltip(`Get variable "${varName.trim()}"\n\nUse in prompts: {{get:${varName.trim()}}}`);
+        this.setTooltip(`Get variable "${varName}"\n\nUse in prompts: {{getVar("${varName}")}}`);
       }
     });
   }
 };
 
-// Generator for the Get Variable block
-export const getVariableGenerator = function(block: Blockly.Block, generator: any): string {
+// Generator for the Get Variable block (returns JavaScript expression for value usage)
+export const getVariableGenerator = function(block: Blockly.Block, generator: any): [string, number] {
   const name = block.getFieldValue('VAR_NAME');
   
-  const blockData = {
-    id: block.id,
-    type: 'get_variable',
-    name: name.trim()
-  };
+  // Handle case where no variable is selected
+  if (!name || name === '') {
+    const code = '""'; // Return empty string if no variable selected
+    return [code, generator.ORDER_ATOMIC];
+  }
   
-  return JSON.stringify(blockData);
+  // For value connections, return a JavaScript expression that can be evaluated
+  // This will be used in boolean operators and other value blocks
+  const code = `(variables["${name}"] || "")`;
+  
+  return [code, generator.ORDER_MEMBER];
 };
 
 // Block category definition

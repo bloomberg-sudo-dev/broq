@@ -1,17 +1,18 @@
 import * as Blockly from 'blockly';
 import { javascriptGenerator } from 'blockly/javascript';
+import { updateAllGetVariableDropdowns } from './getVariableBlock';
 
 // Define the Set Variable block
 export const setVariableBlock = {
   init: function(this: Blockly.Block) {
     this.jsonInit({
       "type": "set_variable_block",
-      "message0": "📦 Set variable %1 to %2",
+      "message0": "📦 Set %1 to %2",
       "args0": [
         {
           "type": "field_input",
           "name": "VAR_NAME",
-          "text": "name"
+          "text": "variable_name"
         },
         {
           "type": "field_input",
@@ -22,11 +23,11 @@ export const setVariableBlock = {
       "previousStatement": ["flow_block"],
       "nextStatement": ["flow_block"],
       "colour": "#FFCC80",
-      "tooltip": "Store a value in a variable for later use",
+      "tooltip": "Store a value in a variable for later use with {{getVar(\"variable_name\")}}",
       "helpUrl": ""
     });
 
-    // Add validation
+    // Add validation and update Get Variable dropdowns
     this.setOnChange(function(this: Blockly.Block, changeEvent: Blockly.Events.Abstract) {
       const varName = this.getFieldValue('VAR_NAME');
       if (!varName || varName.trim() === '') {
@@ -35,7 +36,14 @@ export const setVariableBlock = {
         this.setWarningText('Variable name must start with letter or underscore');
       } else {
         this.setWarningText(null);
+        // Update tooltip with current variable name
+        this.setTooltip(`Set variable "${varName.trim()}"\n\nUse in prompts: {{getVar("${varName.trim()}")}}`);
       }
+      
+      // Update all Get Variable dropdowns when this Set Variable block changes
+      setTimeout(() => {
+        updateAllGetVariableDropdowns();
+      }, 0);
     });
   }
 };

@@ -1,30 +1,17 @@
 import * as Blockly from 'blockly';
 import { javascriptGenerator } from 'blockly/javascript';
 
-// Define condition types for the dropdown
-const CONDITION_TYPES = [
-  ['📝 text contains', 'text_contains'],
-  ['📏 text length >', 'text_length'],
-  ['📦 variable equals', 'var_equals'],
-  ['🎭 AI sentiment is', 'ai_sentiment']
-];
-
-// Define the If block
+// Define the If block (updated to accept boolean inputs)
 export const ifBlock = {
   init: function(this: Blockly.Block) {
     this.jsonInit({
       "type": "if_block",
-      "message0": "🤔 If %1 %2",
+      "message0": "🤔 If %1",
       "args0": [
         {
-          "type": "field_dropdown",
-          "name": "CONDITION_TYPE",
-          "options": CONDITION_TYPES
-        },
-        {
-          "type": "field_input",
-          "name": "VALUE",
-          "text": "value"
+          "type": "input_value",
+          "name": "CONDITION",
+          "check": ["Boolean"]
         }
       ],
       "message1": "✅ Then:",
@@ -50,58 +37,57 @@ export const ifBlock = {
       "previousStatement": ["flow_block"],
       "nextStatement": ["flow_block"],
       "colour": "#FFE082",
-      "tooltip": "Run different blocks based on a condition",
+      "tooltip": "Run different blocks based on a boolean condition",
       "helpUrl": ""
     });
   }
 };
 
-// Generator for the If block
+// Generator for the If block (updated to handle boolean input)
 export const ifGenerator = function(block: Blockly.Block, generator: any): string {
-  const conditionType = block.getFieldValue('CONDITION_TYPE');
-  const value = block.getFieldValue('VALUE');
+  // Get child blocks for THEN and ELSE branches
+  const thenBlocks = extractChildBlocks(block, 'THEN_BLOCKS', generator);
+  const elseBlocks = extractChildBlocks(block, 'ELSE_BLOCKS', generator);
   
-  // Extract child blocks from statement inputs
-  const thenBlocks = extractChildBlocks(block.getInputTargetBlock('THEN_BLOCKS'), generator);
-  const elseBlocks = extractChildBlocks(block.getInputTargetBlock('ELSE_BLOCKS'), generator);
+  // Get the boolean condition value
+  const conditionCode = generator.valueToCode(block, 'CONDITION', generator.ORDER_NONE);
   
   const blockData = {
     id: block.id,
     type: 'if',
-    conditionType,
-    value,
-    thenBlocks,
-    elseBlocks
+    conditionType: 'boolean_expression',
+    conditionCode: conditionCode || 'false',
+    thenBlocks: thenBlocks,
+    elseBlocks: elseBlocks
   };
   
   return JSON.stringify(blockData);
 };
 
-// Helper function to extract child blocks from a statement input
-function extractChildBlocks(startBlock: Blockly.Block | null, generator: any): any[] {
-  const blocks: any[] = [];
-  let currentBlock = startBlock;
+// Helper function to extract child blocks from statement inputs
+function extractChildBlocks(block: Blockly.Block, inputName: string, generator: any): any[] {
+  const childBlocks: any[] = [];
+  let currentChild = block.getInputTargetBlock(inputName);
   
-  while (currentBlock) {
-    // Get the generator for this block type
-    const blockGenerator = generator.forBlock[currentBlock.type];
-    if (blockGenerator) {
-      const blockDataString = blockGenerator(currentBlock, generator);
-      if (blockDataString) {
-        try {
-          const blockData = JSON.parse(blockDataString);
-          blocks.push(blockData);
-        } catch (e) {
-          console.warn('Failed to parse block data:', blockDataString);
+  while (currentChild) {
+    try {
+      // Get the generator for this child block
+      const childGenerator = generator.forBlock[currentChild.type];
+      if (childGenerator) {
+        const childData = childGenerator(currentChild, generator);
+        if (childData && typeof childData === 'string') {
+          const parsedData = JSON.parse(childData);
+          childBlocks.push(parsedData);
         }
       }
+    } catch (error) {
+      console.error('Error processing child block:', error);
     }
     
-    // Move to the next block in the chain
-    currentBlock = currentBlock.getNextBlock();
+    currentChild = currentChild.getNextBlock();
   }
   
-  return blocks;
+  return childBlocks;
 }
 
 // Block category definition
