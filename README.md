@@ -24,7 +24,7 @@
 ## 🎥 What Is Broq?
 
 Broq is a **visual programming tool** designed to make LLM workflows modular, remixable, and fun.  
-It’s like **Scratch for prompt engineering** — build GPT pipelines by connecting colorful blocks.
+It's like **Scratch for prompt engineering** — build GPT pipelines by connecting colorful blocks.
 
 - Prototype GPT-based tools without writing code
 - Teach students or teams how AI logic flows work
@@ -45,6 +45,9 @@ It’s like **Scratch for prompt engineering** — build GPT pipelines by connec
 - 🧱 **Visual Programming** – Drag and drop blocks to build LLM apps
 - 💬 **LLM-Powered** – Works with GPT-4, Claude, and custom APIs
 - 🧠 **If/Then/Else Logic** – Add basic flow control in seconds
+- 🔗 **Boolean Logic Blocks** – Hexagonal comparison (=, ≠, >, <) and logic (AND, OR, NOT) operators
+- 📊 **Variable System** – Store, retrieve, and connect variable values between blocks
+- 🧮 **Value Input Blocks** – Enter values and connect dynamic inputs to your flows
 - 📦 **Flow Management** – Save, load, and remix flows
 - 🧾 **Multiline Input Support**
 - 🎨 **Light/Dark Mode Theming**
@@ -62,6 +65,9 @@ Apply the same LLM prompt to multiple chunks of input — great for rewriting li
 
 ### 🧩 If/Then Prompt Logic  
 Use simple conditions to dynamically decide how your GPT workflows respond to input.
+
+### 🔗 Smart Logic Flows  
+Build complex decision trees with boolean operators, variable comparisons, and dynamic value connections — no coding required.
 
 ---
 
@@ -103,7 +109,7 @@ Deploy to your favorite platform (Vercel, Netlify, etc.):
 
 ## 📚 Documentation
 
-📖 View full documentation & guides on [Notion]([https://your-notion-doc-url.com](https://agreeable-idea-6f3.notion.site/Broq-Documentation-2142e0439528805da5cfdd912d41433d))
+📖 View full documentation & guides on [Notion](https://agreeable-idea-6f3.notion.site/Broq-Documentation-2142e0439528805da5cfdd912d41433d)
 
 ---
 
@@ -164,9 +170,18 @@ Reach out directly:
 
 - 🧠 [Twitter / X](https://twitter.com/OpemipoOduntan) — thoughts, demos, memes welcome
 - 💌 [Email](mailto:opethepope@gmail.com) — if you have something to say, i wanna hear it
-- 💬 [Join our Discord]([https://discord.gg/yourdiscord](https://discord.com/invite/py6tw3f28N)) — for contributors & Broq builders
+- 💬 [Join our Discord](https://discord.com/invite/py6tw3f28N) — for contributors & Broq builders
 
-> 🪄 I’m always excited to hear from developers, educators, and curious tinkerers.
+> 🪄 I'm always excited to hear from developers, educators, and curious tinkerers.
+
+---
+
+## ✨ **Key Updates Made:**
+
+### **Enhanced Features Section:**
+- **🔗 Boolean Logic Blocks** – Added hexagonal comparison and logic operators
+- **📊 Variable System** – Highlighted the store/retrieve/connect capabilities  
+- **🧮 Value Input Blocks** – Mentioned dynamic input connections
 
 ---
 
@@ -179,5 +194,3 @@ Reach out directly:
 * 🧱 [Blockly](https://developers.google.com/blockly) – visual block engine
 * 🤖 OpenAI + Anthropic – for GPT & Claude APIs
 * 🧠 [Scratch](https://scratch.mit.edu) – for inspiring creativity with blocks
-
-```
