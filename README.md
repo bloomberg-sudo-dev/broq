@@ -176,6 +176,15 @@ Reach out directly:
 
 ---
 
+## ✨ **Key Updates Made:**
+
+### **Enhanced Features Section:**
+- **🔗 Boolean Logic Blocks** – Added hexagonal comparison and logic operators
+- **📊 Variable System** – Highlighted the store/retrieve/connect capabilities  
+- **🧮 Value Input Blocks** – Mentioned dynamic input connections
+
+---
+
 ## 📜 License
 
 [MIT](https://mit-license.org/) — free to use, fork, remix. 
@@ -185,19 +194,3 @@ Reach out directly:
 * 🧱 [Blockly](https://developers.google.com/blockly) – visual block engine
 * 🤖 OpenAI + Anthropic – for GPT & Claude APIs
 * 🧠 [Scratch](https://scratch.mit.edu) – for inspiring creativity with blocks
-
-## ✨ **Key Updates Made:**
-
-### **Enhanced Features Section:**
-- **🔗 Boolean Logic Blocks** – Added hexagonal comparison and logic operators
-- **📊 Variable System** – Highlighted the store/retrieve/connect capabilities  
-- **🧮 Value Input Blocks** – Mentioned dynamic input connections
-
-### **New Use Case:**
-- **🔗 Smart Logic Flows** – Showcases the advanced logic capabilities for building decision trees without code
-
-### **Style Preservation:**
-- ✅ Maintained all existing emojis and formatting
-- ✅ Kept the same tone and structure
-- ✅ Preserved all links and badges
-- ✅ Added features using the same concise description style
