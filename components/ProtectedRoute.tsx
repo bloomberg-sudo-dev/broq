@@ -12,10 +12,25 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { user, loading } = useAuth()
   const router = useRouter()
 
+  // Debug: Log auth state and check for OAuth tokens in URL
+  useEffect(() => {
+    console.log('ProtectedRoute: Auth state check:', { 
+      user: user?.email || null, 
+      loading,
+      hasUrlFragment: window.location.hash ? 'yes' : 'no',
+      currentUrl: window.location.href
+    })
+    
+    // Check if we have OAuth tokens in the URL fragment
+    if (window.location.hash.includes('access_token')) {
+      console.log('ProtectedRoute: OAuth tokens detected in URL, Supabase should process automatically...')
+    }
+  }, [user, loading])
+
   useEffect(() => {
     // If not loading and no user, redirect to home with auth modal
     if (!loading && !user) {
-      console.log('ProtectedRoute: No user found, redirecting to home')
+      console.log('ProtectedRoute: No user found after loading completed, redirecting to home')
       router.push('/?auth=required')
     }
   }, [user, loading, router])

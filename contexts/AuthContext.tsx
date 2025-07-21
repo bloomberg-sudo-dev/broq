@@ -21,24 +21,99 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
+  // Debug: Check Supabase configuration
   useEffect(() => {
+    console.log('AuthContext: Supabase configuration check:', {
+      url: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'present' : 'MISSING',
+      urlValue: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'present' : 'MISSING',
+      anonKeyPrefix: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 20) + '...',
+      client: !!supabase
+    })
+  }, [])
+
+  useEffect(() => {
+    // Handle OAuth tokens in URL fragment
+    const handleOAuthTokens = async () => {
+      if (typeof window !== 'undefined' && window.location.hash.includes('access_token')) {
+        console.log('AuthContext: OAuth tokens detected in URL, processing...')
+        
+        // Parse the URL fragment to extract tokens
+        const hashParams = new URLSearchParams(window.location.hash.substring(1))
+        const accessToken = hashParams.get('access_token')
+        const refreshToken = hashParams.get('refresh_token')
+        
+        if (accessToken) {
+          console.log('AuthContext: Setting session from OAuth tokens...')
+          
+          try {
+            // Set the session using the tokens from URL
+            const { data, error } = await supabase.auth.setSession({
+              access_token: accessToken,
+              refresh_token: refreshToken || ''
+            })
+            
+            if (error) {
+              console.error('AuthContext: Error setting session from tokens:', error)
+            } else if (data.session) {
+              console.log('AuthContext: Successfully set session from OAuth tokens:', data.session.user?.email)
+              setUser(data.session.user)
+              
+              // Clear URL fragment
+              window.history.replaceState({}, document.title, window.location.pathname)
+              return true // Successfully processed
+            }
+          } catch (error) {
+            console.error('AuthContext: Error processing OAuth tokens:', error)
+          }
+        }
+      }
+      return false // No tokens processed
+    }
+
     // Get initial session
     const getInitialSession = async () => {
       try {
-        const { data: { session }, error } = await supabase.auth.getSession()
+        console.log('AuthContext: Getting initial session...')
         
-        if (error) {
-          console.warn('AuthContext: Session error:', error.message)
-          // If there's an auth error (like invalid refresh token), clear the session
-          if (error.message.includes('refresh_token_not_found') || 
-              error.message.includes('Invalid Refresh Token') ||
-              error.message.includes('AuthApiError')) {
-            console.log('AuthContext: Clearing invalid session due to token error')
-            await supabase.auth.signOut()
-            setUser(null)
+        // First try to handle OAuth tokens if present
+        const tokensProcessed = await handleOAuthTokens()
+        
+        if (!tokensProcessed) {
+          // Normal session check
+          const { data: { session }, error } = await supabase.auth.getSession()
+          
+          console.log('AuthContext: Initial session result:', {
+            hasSession: !!session,
+            userEmail: session?.user?.email,
+            sessionExpiry: session?.expires_at,
+            error: error?.message,
+            accessToken: session?.access_token ? 'present' : 'missing'
+          })
+          
+          if (error) {
+            console.warn('AuthContext: Session error:', {
+              message: error.message,
+              status: error.status,
+              name: error.name
+            })
+            
+            // If there's an auth error (like invalid refresh token), clear the session
+            if (error.message.includes('refresh_token_not_found') || 
+                error.message.includes('Invalid Refresh Token') ||
+                error.message.includes('AuthApiError') ||
+                error.status === 401) {
+              console.log('AuthContext: Clearing invalid session due to auth error')
+              await supabase.auth.signOut()
+              setUser(null)
+            }
+          } else {
+            setUser(session?.user ?? null)
+            
+            if (session?.user) {
+              console.log('AuthContext: User successfully authenticated:', session.user.email)
+            }
           }
-        } else {
-          setUser(session?.user ?? null)
         }
       } catch (error) {
         console.error('AuthContext: Unexpected error getting session:', error)
@@ -55,7 +130,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log('AuthContext: Auth state changed:', event, session?.user?.email || 'No user')
+        console.log('AuthContext: Auth state changed:', {
+          event,
+          userEmail: session?.user?.email || 'No user',
+          hasSession: !!session,
+          sessionExpiry: session?.expires_at
+        })
         
         // Handle specific auth events
         if (event === 'TOKEN_REFRESHED') {
@@ -64,7 +144,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           console.log('AuthContext: User signed out')
           setUser(null)
         } else if (event === 'SIGNED_IN') {
-          console.log('AuthContext: User signed in')
+          console.log('AuthContext: User signed in successfully')
           setUser(session?.user ?? null)
         }
         
@@ -112,22 +192,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const signInWithGoogle = async () => {
-    // Use production URL when deployed, localhost only in development
+    // Use Supabase OAuth callback URL - this is the correct approach
     const redirectTo = process.env.NODE_ENV === 'production' 
       ? 'https://broq.vercel.app/auth/callback'
       : `${window.location.origin}/auth/callback`
       
-    const { error } = await supabase.auth.signInWithOAuth({
+    console.log('AuthContext: Initiating Google OAuth...')
+    console.log('AuthContext: Google OAuth redirect URL:', redirectTo)
+    console.log('AuthContext: NODE_ENV:', process.env.NODE_ENV)
+    console.log('AuthContext: window.location.origin:', window.location.origin)
+    console.log('AuthContext: Current URL:', window.location.href)
+      
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo
       }
     })
-    if (error) throw error
+    
+    console.log('AuthContext: Google OAuth response:', { data, error })
+    
+    if (error) {
+      console.error('AuthContext: Google OAuth error:', error)
+      throw error
+    }
+    
+    console.log('AuthContext: Google OAuth initiated successfully')
   }
 
   const signInWithGitHub = async () => {
-    // Use production URL when deployed, localhost only in development
+    // Use Supabase OAuth callback URL - this is the correct approach
     const redirectTo = process.env.NODE_ENV === 'production' 
       ? 'https://broq.vercel.app/auth/callback'
       : `${window.location.origin}/auth/callback`

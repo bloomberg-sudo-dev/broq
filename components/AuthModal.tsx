@@ -150,18 +150,23 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalP
   }
 
   const handleSocialLogin = async (provider: 'google' | 'github') => {
+    console.log(`AuthModal: Starting ${provider} login process...`)
     setError('')
     setLoading(true)
     
     try {
+      console.log(`AuthModal: About to call signInWith${provider.charAt(0).toUpperCase() + provider.slice(1)}()`)
       if (provider === 'google') {
         await signInWithGoogle()
       } else {
         await signInWithGitHub()
       }
+      console.log(`AuthModal: ${provider} OAuth initiated successfully - should redirect to OAuth provider`)
       // Note: OAuth will redirect to callback, which will redirect to /app
       // Don't close modal immediately - let the redirect happen
     } catch (err: any) {
+      console.error(`AuthModal: ${provider} OAuth error:`, err)
+      
       // Handle specific error types for social login
       let errorMessage = err.message || `Failed to sign in with ${provider}`
       

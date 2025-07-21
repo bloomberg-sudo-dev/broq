@@ -8,6 +8,7 @@ import { Sparkles, Zap, Bot, Gamepad2, MessageSquare, Play, ArrowRight, Github, 
 import { useAuth } from "@/contexts/AuthContext"
 import { AuthModal } from "@/components/AuthModal"
 import { AuthRedirect } from "@/components/AuthRedirect"
+import { toast } from "sonner"
 
 export default function BroqLanding() {
   const [currentDemo, setCurrentDemo] = useState(0)
@@ -50,11 +51,27 @@ export default function BroqLanding() {
   // Check for auth redirect from protected route
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
-    if (urlParams.get('auth') === 'required') {
+    const authParam = urlParams.get('auth')
+    
+    if (authParam === 'required') {
       openAuthModal('login')
       // Clean up URL
       window.history.replaceState({}, document.title, window.location.pathname)
+    } else if (authParam === 'error') {
+      // Handle OAuth errors from callback
+      const errorMessage = urlParams.get('error_message') || 'Authentication failed'
+      console.error('OAuth error:', errorMessage)
+      
+      // Show auth modal with error
+      openAuthModal('login')
+      
+      // Show toast notification with error
+      toast.error(errorMessage)
+      
+      // Clean up URL
+      window.history.replaceState({}, document.title, window.location.pathname)
     }
+    
     // Also check for redirect parameter and redirect to app if user is already authenticated
     if (urlParams.get('redirect') === 'app' && user) {
       window.location.href = '/app'
