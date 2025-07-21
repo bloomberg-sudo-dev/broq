@@ -14,8 +14,14 @@ export default function BroqLanding() {
   const [currentDemo, setCurrentDemo] = useState(0)
   const [authModalOpen, setAuthModalOpen] = useState(false)
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login')
+  const [isClient, setIsClient] = useState(false)
   
   const { user, signOut, signInWithGoogle, signInWithGitHub, loading } = useAuth()
+
+  // Client-side only rendering for auth-dependent content
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const demoBlocks = [
     {
@@ -97,10 +103,10 @@ export default function BroqLanding() {
             </div>
 
             {/* Auth Buttons - Moved to extreme right edge */}
-            <div className="flex items-center gap-3 mr-4 sm:mr-6 lg:mr-8">
+            <div className="flex items-center gap-3 mr-4 sm:mr-6 lg:mr-8" suppressHydrationWarning>
               {loading ? (
                 <div className="w-8 h-8 animate-pulse bg-gray-200 rounded-full"></div>
-              ) : user ? (
+              ) : isClient && user ? (
                 <>
                   <div className="hidden sm:flex items-center gap-2 text-gray-600">
                     <User className="w-4 h-4" />
@@ -124,7 +130,7 @@ export default function BroqLanding() {
                     </a>
                   </Button>
                 </>
-              ) : (
+              ) : isClient ? (
                 <>
                   <Button
                     variant="ghost"
@@ -141,6 +147,15 @@ export default function BroqLanding() {
                     Try Broq Now! 🚀
                   </Button>
                 </>
+              ) : (
+                // SSR fallback
+                <Button 
+                  className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full px-6 shadow-lg opacity-75"
+                  disabled
+                >
+                  <Sparkles className="mr-2 h-4 w-4" />
+                  Try Broq Now! 🚀
+                </Button>
               )}
             </div>
           </div>
@@ -168,8 +183,8 @@ export default function BroqLanding() {
             single line of code! 🚀
           </p>
 
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            {user ? (
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row" suppressHydrationWarning>
+            {isClient && user ? (
               <Button
                 size="lg"
                 asChild
@@ -183,7 +198,7 @@ export default function BroqLanding() {
             ) : (
               <Button
                 size="lg"
-                onClick={() => openAuthModal('signup')}
+                onClick={() => isClient ? openAuthModal('signup') : undefined}
                 className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
               >
                 <Play className="mr-2 h-5 w-5" />
@@ -205,7 +220,7 @@ export default function BroqLanding() {
           </div>
 
           {/* Quick Social Login - Only show if not authenticated */}
-          {!user && (
+          {isClient && !user && (
             <div className="mt-8 flex flex-col items-center">
               <p className="text-gray-500 text-sm mb-4">Or sign up instantly with:</p>
               <div className="flex gap-4">
@@ -421,8 +436,8 @@ export default function BroqLanding() {
             programming blocks!
           </p>
 
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            {user ? (
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row" suppressHydrationWarning>
+            {isClient && user ? (
               <Button
                 size="lg"
                 asChild
@@ -436,7 +451,7 @@ export default function BroqLanding() {
             ) : (
               <Button
                 size="lg"
-                onClick={() => openAuthModal('signup')}
+                onClick={() => isClient ? openAuthModal('signup') : undefined}
                 className="bg-white text-purple-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
               >
                 <Sparkles className="mr-2 h-5 w-5" />
