@@ -403,10 +403,10 @@ export default function BroqLanding() {
       </section>
 
       {/* Testimonial Section */}
+      {/* 
       <section className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <div className="relative">
-            {/* Sticky Note Style Testimonial */}
             <div className="bg-yellow-200 rounded-lg p-8 shadow-lg transform rotate-1 hover:rotate-0 transition-transform duration-300 border-l-4 border-yellow-400">
               <div className="absolute -top-2 -left-2 w-6 h-6 bg-red-400 rounded-full shadow-md"></div>
               <div className="font-handwriting text-lg text-gray-800 mb-4">
@@ -426,6 +426,7 @@ export default function BroqLanding() {
           </div>
         </div>
       </section>
+      */}
 
       {/* Call to Action Section */}
       <section className="px-4 py-20 sm:px-6 lg:px-8 bg-gradient-to-r from-purple-600 via-blue-600 to-green-600">
@@ -466,7 +467,7 @@ export default function BroqLanding() {
             >
               
                 <Bot className="mr-2 h-5 w-5" />
-                Try Broq in Your Classroom!
+                Book a demo call!
               
             </Button>
             </a>
