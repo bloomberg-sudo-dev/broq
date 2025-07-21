@@ -159,10 +159,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = async (email: string, password: string) => {
     console.log('AuthContext: Signing up user:', email)
     
-    // Use production URL when deployed, localhost only in development
-    const emailRedirectTo = process.env.NODE_ENV === 'production' 
-      ? 'https://broq.vercel.app/?redirect=app'
-      : `${window.location.origin}/?redirect=app`
+    // Use current domain for redirect - works for both localhost and production
+    const emailRedirectTo = `${window.location.origin}/?redirect=app`
     
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -192,10 +190,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const signInWithGoogle = async () => {
-    // Use Supabase OAuth callback URL - this is the correct approach
-    const redirectTo = process.env.NODE_ENV === 'production' 
-      ? 'https://broq.vercel.app/auth/callback'
-      : `${window.location.origin}/auth/callback`
+    // Use current domain for OAuth callback - works for both localhost and production
+    const redirectTo = `${window.location.origin}/auth/callback`
       
     console.log('AuthContext: Initiating Google OAuth...')
     console.log('AuthContext: Google OAuth redirect URL:', redirectTo)
@@ -221,10 +217,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const signInWithGitHub = async () => {
-    // Use Supabase OAuth callback URL - this is the correct approach
-    const redirectTo = process.env.NODE_ENV === 'production' 
-      ? 'https://broq.vercel.app/auth/callback'
-      : `${window.location.origin}/auth/callback`
+    // Use current domain for OAuth callback - works for both localhost and production
+    const redirectTo = `${window.location.origin}/auth/callback`
       
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
