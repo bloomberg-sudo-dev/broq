@@ -126,7 +126,7 @@ export default function BroqLanding() {
                   >
                     <a href="/app">
                       <Sparkles className="mr-2 h-4 w-4" />
-                      Go to App 🚀
+                      Try broq now! 🚀
                     </a>
                   </Button>
                 </>
@@ -192,7 +192,7 @@ export default function BroqLanding() {
               >
                 <a href="/app">
                   <Play className="mr-2 h-5 w-5" />
-                  Go to App 🎮
+                  Try broq now! 🎮
                 </a>
               </Button>
             ) : (
@@ -446,7 +446,7 @@ export default function BroqLanding() {
               >
                 <a href="/app">
                   <Sparkles className="mr-2 h-5 w-5" />
-                  Go to App 🎉
+                  Try broq now! 🎉
                 </a>
               </Button>
             ) : (
