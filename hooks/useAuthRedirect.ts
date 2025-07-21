@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 
 export function useAuthRedirect() {
-  const { user, loading } = useAuth()
+  const { user, loading, clearAuthError } = useAuth()
   const router = useRouter()
   const redirectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -24,6 +24,27 @@ export function useAuthRedirect() {
     }, 100) // Small delay to ensure auth state is updated
   }
 
+  const handleAuthError = async (error: any) => {
+    console.log('useAuthRedirect: Handling auth error:', error.message)
+    
+    // Check if it's a refresh token error
+    if (error.message && (
+        error.message.includes('refresh_token_not_found') || 
+        error.message.includes('Invalid Refresh Token') ||
+        error.message.includes('AuthApiError')
+    )) {
+      console.log('useAuthRedirect: Refresh token error detected, clearing auth state')
+      await clearAuthError()
+      
+      // Redirect to home with auth modal
+      router.push('/?auth=required')
+      
+      return 'Your session has expired. Please sign in again.'
+    }
+    
+    return error.message || 'An authentication error occurred'
+  }
+
   useEffect(() => {
     return () => {
       // Cleanup timeout on unmount
@@ -33,5 +54,5 @@ export function useAuthRedirect() {
     }
   }, [])
 
-  return { redirectToApp }
+  return { redirectToApp, handleAuthError }
 } 

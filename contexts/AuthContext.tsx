@@ -12,6 +12,7 @@ interface AuthContextType {
   signInWithGoogle: () => Promise<void>
   signInWithGitHub: () => Promise<void>
   signOut: () => Promise<void>
+  clearAuthError: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -23,9 +24,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Get initial session
     const getInitialSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      setUser(session?.user ?? null)
-      setLoading(false)
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession()
+        
+        if (error) {
+          console.warn('AuthContext: Session error:', error.message)
+          // If there's an auth error (like invalid refresh token), clear the session
+          if (error.message.includes('refresh_token_not_found') || 
+              error.message.includes('Invalid Refresh Token') ||
+              error.message.includes('AuthApiError')) {
+            console.log('AuthContext: Clearing invalid session due to token error')
+            await supabase.auth.signOut()
+            setUser(null)
+          }
+        } else {
+          setUser(session?.user ?? null)
+        }
+      } catch (error) {
+        console.error('AuthContext: Unexpected error getting session:', error)
+        // Clear potentially corrupted auth state
+        await supabase.auth.signOut()
+        setUser(null)
+      } finally {
+        setLoading(false)
+      }
     }
 
     getInitialSession()
@@ -34,6 +56,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log('AuthContext: Auth state changed:', event, session?.user?.email || 'No user')
+        
+        // Handle specific auth events
+        if (event === 'TOKEN_REFRESHED') {
+          console.log('AuthContext: Token refreshed successfully')
+        } else if (event === 'SIGNED_OUT') {
+          console.log('AuthContext: User signed out')
+          setUser(null)
+        } else if (event === 'SIGNED_IN') {
+          console.log('AuthContext: User signed in')
+          setUser(session?.user ?? null)
+        }
+        
         setUser(session?.user ?? null)
         setLoading(false)
       }
@@ -112,6 +146,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (error) throw error
   }
 
+  const clearAuthError = async () => {
+    console.log('AuthContext: Clearing auth error and invalid tokens')
+    try {
+      // Force sign out to clear any invalid tokens
+      await supabase.auth.signOut()
+      
+      // Clear user state
+      setUser(null)
+      
+      // Clear any stored auth data from localStorage
+      if (typeof window !== 'undefined') {
+        // Clear Supabase auth related localStorage items
+        const keysToRemove = []
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i)
+          if (key && key.startsWith('sb-')) {
+            keysToRemove.push(key)
+          }
+        }
+        keysToRemove.forEach(key => localStorage.removeItem(key))
+      }
+      
+      console.log('AuthContext: Auth error cleared successfully')
+    } catch (error) {
+      console.error('AuthContext: Error clearing auth state:', error)
+    }
+  }
+
   const value = {
     user,
     loading,
@@ -120,6 +182,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signInWithGoogle,
     signInWithGitHub,
     signOut,
+    clearAuthError,
   }
 
   return (

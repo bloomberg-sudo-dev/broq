@@ -22,7 +22,7 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalP
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
-  const { signIn, signUp, signInWithGoogle, signInWithGitHub, user } = useAuth()
+  const { signIn, signUp, signInWithGoogle, signInWithGitHub, user, clearAuthError } = useAuth()
   const router = useRouter()
   const [shouldRedirect, setShouldRedirect] = useState(false)
 
@@ -116,7 +116,20 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalP
       }
     } catch (err: any) {
       console.error('AuthModal: Authentication error:', err)
-      setError(err.message || 'An error occurred')
+      
+      // Handle specific error types
+      let errorMessage = err.message || 'An error occurred'
+      
+      // Check for refresh token errors
+      if (errorMessage.includes('refresh_token_not_found') || 
+          errorMessage.includes('Invalid Refresh Token') ||
+          errorMessage.includes('AuthApiError')) {
+        console.log('AuthModal: Refresh token error detected, clearing auth state')
+        await clearAuthError()
+        errorMessage = 'Your session has expired. Please sign in again.'
+      }
+      
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }
@@ -149,7 +162,19 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalP
       // Note: OAuth will redirect to callback, which will redirect to /app
       // Don't close modal immediately - let the redirect happen
     } catch (err: any) {
-      setError(err.message || `Failed to sign in with ${provider}`)
+      // Handle specific error types for social login
+      let errorMessage = err.message || `Failed to sign in with ${provider}`
+      
+      // Check for refresh token errors
+      if (errorMessage.includes('refresh_token_not_found') || 
+          errorMessage.includes('Invalid Refresh Token') ||
+          errorMessage.includes('AuthApiError')) {
+        console.log('AuthModal: Social login refresh token error detected, clearing auth state')
+        await clearAuthError()
+        errorMessage = 'Your session has expired. Please try signing in again.'
+      }
+      
+      setError(errorMessage)
       setLoading(false)
     }
   }
