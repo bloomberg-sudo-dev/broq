@@ -44,11 +44,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signUp = async (email: string, password: string) => {
     console.log('AuthContext: Signing up user:', email)
+    
+    // Use production URL when deployed, localhost only in development
+    const emailRedirectTo = process.env.NODE_ENV === 'production' 
+      ? 'https://broq.vercel.app/?redirect=app'
+      : `${window.location.origin}/?redirect=app`
+    
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/?redirect=app`
+        emailRedirectTo
       }
     })
     if (error) {
@@ -72,20 +78,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const signInWithGoogle = async () => {
+    // Use production URL when deployed, localhost only in development
+    const redirectTo = process.env.NODE_ENV === 'production' 
+      ? 'https://broq.vercel.app/auth/callback'
+      : `${window.location.origin}/auth/callback`
+      
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`
+        redirectTo
       }
     })
     if (error) throw error
   }
 
   const signInWithGitHub = async () => {
+    // Use production URL when deployed, localhost only in development
+    const redirectTo = process.env.NODE_ENV === 'production' 
+      ? 'https://broq.vercel.app/auth/callback'
+      : `${window.location.origin}/auth/callback`
+      
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`
+        redirectTo
       }
     })
     if (error) throw error
