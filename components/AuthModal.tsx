@@ -259,7 +259,7 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalP
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-xl font-semibold transition-all transform hover:scale-105 disabled:transform-none disabled:opacity-70"
+                              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-xl font-semibold transition-all transform hover:scale-105 disabled:transform-none disabled:opacity-70"
             >
               {loading ? (
                 <>

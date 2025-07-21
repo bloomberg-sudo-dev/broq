@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broq Color Consistency Test</title>
+    <style>
+        /* Load our consistent CSS variables */
+        :root {
+            color-scheme: light dark;
+            -webkit-color-space: srgb;
+            color-space: srgb;
+            
+            --broq-purple: #9333ea;  /* purple-600 */
+            --broq-blue: #3b82f6;    /* blue-600 */
+            --broq-green: #22c55e;   /* green-600 */
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f8fafc;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .color-box {
+            width: 150px;
+            height: 100px;
+            margin: 10px;
+            border-radius: 12px;
+            display: inline-block;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .color-label {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            font-size: 12px;
+        }
+
+        /* Test our consistent gradients using original Broq colors */
+        .gradient-primary {
+            background: linear-gradient(to right, var(--broq-purple) 0%, var(--broq-blue) 33%, var(--broq-green) 100%);
+        }
+
+        .gradient-purple-blue {
+            background: linear-gradient(to right, var(--broq-purple) 0%, var(--broq-blue) 100%);
+        }
+
+        .gradient-blue-green {
+            background: linear-gradient(to right, var(--broq-blue) 0%, var(--broq-green) 100%);
+        }
+
+        /* Individual colors */
+        .purple {
+            background: var(--broq-purple);
+        }
+
+        .blue {
+            background: var(--broq-blue);
+        }
+
+        .green {
+            background: var(--broq-green);
+        }
+
+        /* Device info */
+        .device-info {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-item {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e293b;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #334155;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        /* Test text gradient using original Broq colors */
+        .text-gradient {
+            background: linear-gradient(to right, var(--broq-purple) 0%, var(--broq-blue) 33%, var(--broq-green) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🎨 Broq Color Consistency Test</h1>
+        
+        <div class="device-info">
+            <h3>📱 Device Information</h3>
+            <div class="info-item"><strong>User Agent:</strong> <span id="userAgent"></span></div>
+            <div class="info-item"><strong>Screen Size:</strong> <span id="screenSize"></span></div>
+            <div class="info-item"><strong>Device Pixel Ratio:</strong> <span id="devicePixelRatio"></span></div>
+            <div class="info-item"><strong>Color Gamut:</strong> <span id="colorGamut"></span></div>
+            <div class="info-item"><strong>Time:</strong> <span id="timestamp"></span></div>
+        </div>
+
+        <div class="text-gradient">
+            Colorful Blocks! 🧱✨
+        </div>
+
+        <h2>🌈 Primary Gradients</h2>
+        <div class="color-box gradient-primary">
+            <div class="color-label">Primary Gradient</div>
+        </div>
+        <div class="color-box gradient-purple-blue">
+            <div class="color-label">Purple-Blue</div>
+        </div>
+        <div class="color-box gradient-blue-green">
+            <div class="color-label">Blue-Green</div>
+        </div>
+
+        <h2>🎯 Individual Colors</h2>
+        <div class="color-box purple">
+            <div class="color-label">Purple</div>
+        </div>
+        <div class="color-box blue">
+            <div class="color-label">Blue</div>
+        </div>
+        <div class="color-box green">
+            <div class="color-label">Green</div>
+        </div>
+
+        <div style="margin-top: 40px; text-align: center; color: #64748b; font-size: 14px;">
+            <p>📸 Take a screenshot of this page on different devices to compare color consistency.</p>
+            <p>🔗 Share with: <strong>broq.app/color-test.html</strong></p>
+        </div>
+    </div>
+
+    <script>
+        // Populate device information
+        document.getElementById('userAgent').textContent = navigator.userAgent;
+        document.getElementById('screenSize').textContent = `${screen.width}x${screen.height}`;
+        document.getElementById('devicePixelRatio').textContent = window.devicePixelRatio || 'Unknown';
+        document.getElementById('timestamp').textContent = new Date().toLocaleString();
+
+        // Detect color gamut support
+        let colorGamut = 'sRGB (Standard)';
+        if (window.matchMedia && window.matchMedia('(color-gamut: p3)').matches) {
+            colorGamut = 'P3 (Wide Gamut)';
+        } else if (window.matchMedia && window.matchMedia('(color-gamut: rec2020)').matches) {
+            colorGamut = 'Rec2020 (Ultra Wide)';
+        }
+        document.getElementById('colorGamut').textContent = colorGamut;
+
+        // Log color support information
+        console.log('🎨 Color Support Detection:');
+        console.log('- sRGB:', window.matchMedia('(color-gamut: srgb)').matches);
+        console.log('- P3:', window.matchMedia('(color-gamut: p3)').matches);
+        console.log('- Rec2020:', window.matchMedia('(color-gamut: rec2020)').matches);
+        console.log('- High contrast:', window.matchMedia('(prefers-contrast: high)').matches);
+        console.log('- Reduced motion:', window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    </script>
+</body>
+</html> 

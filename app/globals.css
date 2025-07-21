@@ -2,6 +2,104 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Color consistency improvements for cross-device compatibility */
+@layer base {
+  /* Force consistent color space interpretation */
+  :root {
+    color-scheme: light dark;
+    /* Ensure sRGB color space for consistent rendering */
+    -webkit-color-space: srgb;
+    color-space: srgb;
+  }
+
+  /* Device-specific color adjustments */
+  @media screen and (color-gamut: p3) {
+    /* Wide gamut displays - maintain consistency */
+    :root {
+      --gradient-purple: color(display-p3 0.529 0.271 0.906);
+      --gradient-blue: color(display-p3 0.314 0.565 0.906);
+      --gradient-green: color(display-p3 0.196 0.804 0.196);
+    }
+  }
+
+  @media screen and (color-gamut: srgb) {
+    /* Standard gamut displays */
+    :root {
+      --gradient-purple: rgb(147, 51, 234);
+      --gradient-blue: rgb(59, 130, 246);
+      --gradient-green: rgb(34, 197, 94);
+    }
+  }
+
+  /* Mobile device optimizations */
+  @media (hover: none) and (pointer: coarse) {
+    :root {
+      /* Ensure mobile devices use consistent color interpretation */
+      -webkit-tap-highlight-color: transparent;
+      /* Force hardware acceleration for gradients */
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+    }
+  }
+
+  /* High DPI display adjustments */
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    :root {
+      /* Ensure consistent gradient rendering on high DPI */
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+    }
+  }
+}
+
+/* Enhanced cross-device consistency for Tailwind gradients */
+@layer utilities {
+  /* Enhance all gradient backgrounds for consistent rendering */
+  [class*="bg-gradient-"] {
+    /* Force consistent gradient rendering across devices */
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-attachment: scroll; /* Better mobile performance */
+    /* Force hardware acceleration */
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  /* Enhance gradient text for consistent rendering */
+  [class*="bg-clip-text"] {
+    /* Force consistent text gradient rendering */
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* Ensure consistent baseline */
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Device-specific gradient optimizations */
+  @media (hover: none) and (pointer: coarse) {
+    /* Mobile device optimizations */
+    [class*="bg-gradient-"] {
+      /* Force hardware acceleration on mobile */
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+    }
+  }
+
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* High DPI display optimizations */
+    [class*="bg-gradient-"] {
+      /* Ensure crisp gradients on high DPI */
+      background-size: 100% 100%;
+      image-rendering: -webkit-optimize-contrast;
+    }
+  }
+}
+
 /* Loading screen animations */
 @keyframes fade-in {
   from {
@@ -123,6 +221,7 @@
 
 @layer base {
   :root {
+    /* Enhanced color definitions with better consistency */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -187,6 +286,11 @@
     font-feature-settings: "rlig" 1, "calt" 1;
     font-family:
       ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    
+    /* Force consistent color rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 }
 

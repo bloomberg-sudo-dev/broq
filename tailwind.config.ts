@@ -56,6 +56,7 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Using original Tailwind colors for visual consistency
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -76,6 +77,7 @@ const config: Config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      // Remove custom background images since we're using original Tailwind classes
     },
   },
   plugins: [require("tailwindcss-animate")],
