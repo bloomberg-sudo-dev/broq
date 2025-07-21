@@ -8,7 +8,6 @@ import { Sparkles, Zap, Bot, Gamepad2, MessageSquare, Play, ArrowRight, Github, 
 import { useAuth } from "@/contexts/AuthContext"
 import { AuthModal } from "@/components/AuthModal"
 import { AuthRedirect } from "@/components/AuthRedirect"
-// import { AuthDebug } from "@/components/AuthDebug"
 
 export default function BroqLanding() {
   const [currentDemo, setCurrentDemo] = useState(0)
@@ -56,7 +55,11 @@ export default function BroqLanding() {
       // Clean up URL
       window.history.replaceState({}, document.title, window.location.pathname)
     }
-  }, [])
+    // Also check for redirect parameter and redirect to app if user is already authenticated
+    if (urlParams.get('redirect') === 'app' && user) {
+      window.location.href = '/app'
+    }
+  }, [user])
 
   const openAuthModal = (mode: 'login' | 'signup') => {
     setAuthMode(mode)
@@ -73,13 +76,14 @@ export default function BroqLanding() {
 
   const handleSocialLogin = async (provider: 'google' | 'github') => {
     try {
+      console.log(`Starting ${provider} login...`)
       if (provider === 'google') {
         await signInWithGoogle()
       } else {
         await signInWithGitHub()
       }
-      // Close any open auth modal since OAuth will handle the redirect
-      setAuthModalOpen(false)
+      console.log(`${provider} login initiated - will redirect to callback`)
+      // OAuth will redirect to callback, don't close modal immediately
     } catch (error) {
       console.error(`Error signing in with ${provider}:`, error)
     }
@@ -93,20 +97,26 @@ export default function BroqLanding() {
           <div className="flex h-16 items-center justify-between">
             {/* Logo - Moved to extreme left edge */}
             <div className="flex items-center gap-3 ml-4 sm:ml-6 lg:ml-8">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg">
-                B
-              </div>
+                          <div 
+              className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg"
+              style={{
+                background: 'linear-gradient(135deg, #9333ea 0%, #2563eb 100%)',
+                backgroundSize: '100% 100%',
+                backgroundRepeat: 'no-repeat',
+                backgroundAttachment: 'scroll'
+              }}
+            >
+              B
+            </div>
               <div className="flex flex-col">
                 <span className="text-xl font-bold text-gray-900">Broq</span>
                 <span className="text-xs text-gray-500 -mt-1">Visual Flow Builder</span>
               </div>
             </div>
 
-            {/* Auth Buttons - Moved to extreme right edge */}
+            {/* Auth Buttons - Always show same layout */}
             <div className="flex items-center gap-3 mr-4 sm:mr-6 lg:mr-8" suppressHydrationWarning>
-              {loading ? (
-                <div className="w-8 h-8 animate-pulse bg-gray-200 rounded-full"></div>
-              ) : isClient && user ? (
+              {isClient && user ? (
                 <>
                   <div className="hidden sm:flex items-center gap-2 text-gray-600">
                     <User className="w-4 h-4" />
@@ -130,7 +140,7 @@ export default function BroqLanding() {
                     </a>
                   </Button>
                 </>
-              ) : isClient ? (
+              ) : (
                 <>
                   <Button
                     variant="ghost"
@@ -147,15 +157,6 @@ export default function BroqLanding() {
                     Try Broq Now! 🚀
                   </Button>
                 </>
-              ) : (
-                // SSR fallback
-                <Button 
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full px-6 shadow-lg opacity-75"
-                  disabled
-                >
-                  <Sparkles className="mr-2 h-4 w-4" />
-                  Try Broq Now! 🚀
-                </Button>
               )}
             </div>
           </div>
@@ -183,7 +184,7 @@ export default function BroqLanding() {
             single line of code! 🚀
           </p>
 
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row" suppressHydrationWarning>
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             {isClient && user ? (
               <Button
                 size="lg"
@@ -198,7 +199,7 @@ export default function BroqLanding() {
             ) : (
               <Button
                 size="lg"
-                onClick={() => isClient ? openAuthModal('signup') : undefined}
+                onClick={() => openAuthModal('signup')}
                 className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
               >
                 <Play className="mr-2 h-5 w-5" />
@@ -220,7 +221,7 @@ export default function BroqLanding() {
           </div>
 
           {/* Quick Social Login - Only show if not authenticated */}
-          {isClient && !user && (
+          {!user && (
             <div className="mt-8 flex flex-col items-center">
               <p className="text-gray-500 text-sm mb-4">Or sign up instantly with:</p>
               <div className="flex gap-4">
@@ -437,7 +438,7 @@ export default function BroqLanding() {
             programming blocks!
           </p>
 
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row" suppressHydrationWarning>
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             {isClient && user ? (
               <Button
                 size="lg"
@@ -452,7 +453,7 @@ export default function BroqLanding() {
             ) : (
               <Button
                 size="lg"
-                onClick={() => isClient ? openAuthModal('signup') : undefined}
+                onClick={() => openAuthModal('signup')}
                 className="bg-white text-purple-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
               >
                 <Sparkles className="mr-2 h-5 w-5" />
@@ -484,7 +485,15 @@ export default function BroqLanding() {
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center text-white font-bold">
+              <div 
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold"
+                style={{
+                  background: 'linear-gradient(135deg, #9333ea 0%, #2563eb 100%)',
+                  backgroundSize: '100% 100%',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundAttachment: 'scroll'
+                }}
+              >
                 B
               </div>
               <span className="text-xl font-bold text-white">Broq</span>
@@ -519,9 +528,6 @@ export default function BroqLanding() {
 
       {/* Auth Redirect Handler */}
       <AuthRedirect />
-
-      {/* Debug Component - Commented out for production */}
-      {/* <AuthDebug /> */}
     </div>
   )
 }

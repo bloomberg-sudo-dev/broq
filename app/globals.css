@@ -33,201 +33,64 @@
   }
 }
 
-/* Color consistency improvements for cross-device compatibility */
+/* Essential color consistency for cross-device compatibility */
 @layer base {
-  /* Force consistent color space interpretation */
   :root {
     color-scheme: light;
-    /* Force sRGB color space for consistent rendering */
     -webkit-color-space: srgb;
     color-space: srgb;
-    
-    /* Define exact color values for cross-device consistency */
-    --broq-purple-600: #9333ea;
-    --broq-blue-600: #3b82f6;
-    --broq-green-600: #22c55e;
-    --broq-purple-700: #7c3aed;
-    --broq-blue-700: #2563eb;
-    --broq-purple-500: #8b5cf6;
-    --broq-purple-400: #a78bfa;
-    --broq-blue-400: #60a5fa;
-    --broq-purple-50: #faf5ff;
-    --broq-blue-50: #eff6ff;
-    --broq-green-50: #f0fdf4;
-    --broq-purple-100: #f3e8ff;
-    --broq-blue-100: #dbeafe;
-    --broq-green-100: #dcfce7;
-  }
-
-  /* Device-specific color adjustments */
-  @media screen and (color-gamut: p3) {
-    /* Wide gamut displays - maintain consistency */
-    :root {
-      --gradient-purple: color(display-p3 0.529 0.271 0.906);
-      --gradient-blue: color(display-p3 0.314 0.565 0.906);
-      --gradient-green: color(display-p3 0.196 0.804 0.196);
-    }
-  }
-
-  @media screen and (color-gamut: srgb) {
-    /* Standard gamut displays */
-    :root {
-      --gradient-purple: rgb(147, 51, 234);
-      --gradient-blue: rgb(59, 130, 246);
-      --gradient-green: rgb(34, 197, 94);
-    }
-  }
-
-  /* Mobile device optimizations */
-  @media (hover: none) and (pointer: coarse) {
-    :root {
-      /* Ensure mobile devices use consistent color interpretation */
-      -webkit-tap-highlight-color: transparent;
-      /* Force hardware acceleration for gradients */
-      -webkit-transform: translateZ(0);
-      transform: translateZ(0);
-    }
-  }
-
-  /* High DPI display adjustments */
-  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    :root {
-      /* Ensure consistent gradient rendering on high DPI */
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: crisp-edges;
-    }
   }
 }
 
-/* Aggressive cross-device color consistency fixes */
+/* Simplified utilities for essential functionality */
 @layer utilities {
-  /* Force exact gradient colors using CSS variables for maximum consistency */
-  .bg-gradient-to-r.from-purple-600.via-blue-600.to-green-600 {
-    background: var(--broq-purple-600) !important; /* Fallback */
-    background: linear-gradient(to right, var(--broq-purple-600) 0%, var(--broq-blue-600) 50%, var(--broq-green-600) 100%) !important;
-    background-size: 100% 100% !important;
-    background-repeat: no-repeat !important;
-    background-attachment: scroll !important;
+
+  /* Modal utility classes */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 40;
   }
 
-  .bg-gradient-to-r.from-purple-600.to-blue-600 {
-    background: var(--broq-purple-600) !important; /* Fallback */
-    background: linear-gradient(to right, var(--broq-purple-600) 0%, var(--broq-blue-600) 100%) !important;
-    background-size: 100% 100% !important;
-    background-repeat: no-repeat !important;
-    background-attachment: scroll !important;
+  /* Ensure consistent gradient rendering across all browsers */
+  .broq-gradient-header {
+    background: #9333ea; /* Fallback */
+    background: -webkit-linear-gradient(135deg, #9333ea 0%, #2563eb 50%, #16a34a 100%);
+    background: -moz-linear-gradient(135deg, #9333ea 0%, #2563eb 50%, #16a34a 100%);
+    background: -o-linear-gradient(135deg, #9333ea 0%, #2563eb 50%, #16a34a 100%);
+    background: linear-gradient(135deg, #9333ea 0%, #2563eb 50%, #16a34a 100%);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    /* Force sRGB color space for consistency */
+    color-space: srgb;
+    -webkit-color-space: srgb;
   }
 
-  .bg-gradient-to-r.from-purple-600.to-blue-600:hover,
-  .bg-gradient-to-r.from-purple-700.to-blue-700:hover {
-    background: linear-gradient(to right, var(--broq-purple-700) 0%, var(--broq-blue-700) 100%) !important;
-    background-size: 100% 100% !important;
-    background-repeat: no-repeat !important;
+  .broq-gradient-button {
+    background: #9333ea; /* Fallback */
+    background: -webkit-linear-gradient(90deg, #9333ea 0%, #2563eb 100%);
+    background: -moz-linear-gradient(90deg, #9333ea 0%, #2563eb 100%);
+    background: -o-linear-gradient(90deg, #9333ea 0%, #2563eb 100%);
+    background: linear-gradient(90deg, #9333ea 0%, #2563eb 100%);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    /* Force sRGB color space for consistency */
+    color-space: srgb;
+    -webkit-color-space: srgb;
   }
 
-  .bg-gradient-to-br.from-purple-500.to-blue-500 {
-    background: linear-gradient(135deg, var(--broq-purple-500) 0%, var(--broq-blue-600) 100%) !important;
-    background-size: 100% 100% !important;
-    background-repeat: no-repeat !important;
+  .broq-gradient-button:hover {
+    background: #7c3aed; /* Fallback */
+    background: -webkit-linear-gradient(90deg, #7c3aed 0%, #1d4ed8 100%);
+    background: -moz-linear-gradient(90deg, #7c3aed 0%, #1d4ed8 100%);
+    background: -o-linear-gradient(90deg, #7c3aed 0%, #1d4ed8 100%);
+    background: linear-gradient(90deg, #7c3aed 0%, #1d4ed8 100%);
   }
 
-  .bg-gradient-to-br.from-purple-50.via-blue-50.to-green-50 {
-    background: linear-gradient(135deg, var(--broq-purple-50) 0%, var(--broq-blue-50) 50%, var(--broq-green-50) 100%) !important;
-    background-size: 100% 100% !important;
-    background-repeat: no-repeat !important;
-  }
 
-  .bg-gradient-to-br.from-blue-50.to-blue-100 {
-    background: linear-gradient(135deg, var(--broq-blue-50) 0%, var(--broq-blue-100) 100%) !important;
-    background-size: 100% 100% !important;
-    background-repeat: no-repeat !important;
-  }
-
-  .bg-gradient-to-br.from-purple-50.to-purple-100 {
-    background: linear-gradient(135deg, var(--broq-purple-50) 0%, var(--broq-purple-100) 100%) !important;
-    background-size: 100% 100% !important;
-    background-repeat: no-repeat !important;
-  }
-
-  .bg-gradient-to-br.from-green-50.to-green-100 {
-    background: linear-gradient(135deg, var(--broq-green-50) 0%, var(--broq-green-100) 100%) !important;
-    background-size: 100% 100% !important;
-    background-repeat: no-repeat !important;
-  }
-
-  .bg-gradient-to-br.from-purple-400.to-blue-400 {
-    background: linear-gradient(135deg, var(--broq-purple-400) 0%, var(--broq-blue-400) 100%) !important;
-    background-size: 100% 100% !important;
-    background-repeat: no-repeat !important;
-  }
-
-  .bg-gradient-to-r.from-blue-500.to-purple-600 {
-    background: linear-gradient(to right, var(--broq-blue-600) 0%, var(--broq-purple-600) 100%) !important;
-    background-size: 100% 100% !important;
-    background-repeat: no-repeat !important;
-  }
-
-  /* Force consistent text gradients */
-  .bg-gradient-to-r.from-purple-600.via-blue-600.to-green-600.bg-clip-text.text-transparent {
-    background: linear-gradient(to right, var(--broq-purple-600) 0%, var(--broq-blue-600) 50%, var(--broq-green-600) 100%) !important;
-    -webkit-background-clip: text !important;
-    background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    color: transparent !important;
-    background-size: 100% 100% !important;
-    background-repeat: no-repeat !important;
-    /* Mobile Safari specific fixes */
-    -webkit-text-stroke: 0 !important;
-    text-stroke: 0 !important;
-  }
-
-  /* Mobile Safari and iOS specific fixes */
-  @supports (-webkit-touch-callout: none) {
-    /* iOS Safari specific */
-    [class*="bg-gradient-"] {
-      -webkit-transform: translateZ(0) !important;
-      transform: translateZ(0) !important;
-      -webkit-backface-visibility: hidden !important;
-      backface-visibility: hidden !important;
-      -webkit-perspective: 1000 !important;
-      perspective: 1000 !important;
-    }
-
-    .bg-clip-text {
-      -webkit-background-clip: text !important;
-      background-clip: text !important;
-      -webkit-text-fill-color: transparent !important;
-      -webkit-box-decoration-break: clone !important;
-      box-decoration-break: clone !important;
-    }
-  }
-
-  /* Android WebView specific fixes */
-  @media screen and (-webkit-min-device-pixel-ratio: 1) and (max-device-width: 480px) {
-    [class*="bg-gradient-"] {
-      background-attachment: scroll !important;
-      -webkit-transform: translate3d(0, 0, 0) !important;
-      transform: translate3d(0, 0, 0) !important;
-    }
-  }
-
-  /* High DPI mobile displays */
-  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    [class*="bg-gradient-"] {
-      background-size: 100% 100% !important;
-      image-rendering: -webkit-optimize-contrast !important;
-      image-rendering: optimize-contrast !important;
-    }
-  }
-
-  /* Force hardware acceleration on all devices */
-  [class*="bg-gradient-"] {
-    will-change: auto !important;
-    -webkit-transform: translateZ(0) !important;
-    transform: translateZ(0) !important;
-    -webkit-backface-visibility: hidden !important;
-    backface-visibility: hidden !important;
-  }
 }
 
 /* Loading screen animations */

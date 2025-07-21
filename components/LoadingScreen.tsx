@@ -51,9 +51,17 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
       <div className="flex flex-col items-center gap-6">
         {/* Logo */}
         <div className="flex items-center gap-4 animate-fade-in">
-          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-            <span className="text-white font-bold text-2xl">B</span>
-          </div>
+                  <div 
+          className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
+          style={{
+            background: 'linear-gradient(135deg, #9333ea 0%, #2563eb 100%)',
+            backgroundSize: '100% 100%',
+            backgroundRepeat: 'no-repeat',
+            backgroundAttachment: 'scroll'
+          }}
+        >
+          <span className="text-white font-bold text-2xl">B</span>
+        </div>
           <div className="flex flex-col">
             <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">broq.</h1>
             <p className="text-lg text-slate-500 dark:text-slate-400">Visual Flow Builder</p>
@@ -71,8 +79,14 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
         {/* Progress bar */}
         <div className="w-64 h-3 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden animate-fade-in-delay-2">
           <div 
-            className="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transition-all duration-300 ease-out"
-            style={{ width: `${progress}%` }}
+            className="h-full rounded-full transition-all duration-300 ease-out"
+            style={{ 
+              width: `${progress}%`,
+              background: 'linear-gradient(90deg, #9333ea 0%, #2563eb 100%)',
+              backgroundSize: '100% 100%',
+              backgroundRepeat: 'no-repeat',
+              backgroundAttachment: 'scroll'
+            }}
           ></div>
         </div>
         

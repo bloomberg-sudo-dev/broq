@@ -68,6 +68,9 @@ export default function RootLayout({
                 background-color: #ffffff;
                 color: #000000;
                 font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                min-height: 100vh;
+                margin: 0;
+                padding: 0;
               }
               
               /* Force immediate gradient backgrounds */
@@ -84,30 +87,23 @@ export default function RootLayout({
                 from { opacity: 0; }
                 to { opacity: 1; }
               }
+              
+              /* Simplified modal support */
+              .auth-modal {
+                position: fixed;
+                inset: 0;
+                z-index: 50000;
+              }
             `,
           }}
         />
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              // Prevent FOUC and ensure color consistency
+              // Prevent FOUC and ensure consistent theme
               (function() {
-                // Set theme immediately
                 document.documentElement.className = 'light';
                 document.documentElement.style.colorScheme = 'light';
-                
-                // Mobile Safari gradient fixes
-                if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                  document.documentElement.style.webkitTextSizeAdjust = '100%';
-                  document.documentElement.style.webkitFontSmoothing = 'antialiased';
-                  document.documentElement.style.webkitBackfaceVisibility = 'hidden';
-                }
-                
-                // Android WebView fixes
-                if (/Android/i.test(navigator.userAgent)) {
-                  document.documentElement.style.textRendering = 'optimizeLegibility';
-                  document.documentElement.style.fontSmoothing = 'antialiased';
-                }
               })();
             `,
           }}

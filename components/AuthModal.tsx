@@ -26,15 +26,61 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalP
   const router = useRouter()
   const [shouldRedirect, setShouldRedirect] = useState(false)
 
+  // Prevent body scrolling when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      // Store original overflow value
+      const originalOverflow = document.body.style.overflow
+      const originalPaddingRight = document.body.style.paddingRight
+      
+      // Calculate scrollbar width to prevent layout shift
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+      
+      // Prevent scrolling
+      document.body.style.overflow = 'hidden'
+      document.body.style.paddingRight = `${scrollbarWidth}px`
+      
+      // Prevent keyboard scrolling
+      const preventKeyboardScroll = (e: KeyboardEvent) => {
+        const scrollKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown', 'Home', 'End', ' ']
+        if (scrollKeys.includes(e.key) && e.target === document.body) {
+          e.preventDefault()
+        }
+      }
+      
+      // Prevent wheel/touch scrolling on document
+      const preventWheelScroll = (e: WheelEvent | TouchEvent) => {
+        if (e.target === document.body || e.target === document.documentElement) {
+          e.preventDefault()
+        }
+      }
+      
+      // Add event listeners
+      document.addEventListener('keydown', preventKeyboardScroll, { passive: false })
+      document.addEventListener('wheel', preventWheelScroll, { passive: false })
+      document.addEventListener('touchmove', preventWheelScroll, { passive: false })
+      
+      // Cleanup function
+      return () => {
+        document.body.style.overflow = originalOverflow
+        document.body.style.paddingRight = originalPaddingRight
+        document.removeEventListener('keydown', preventKeyboardScroll)
+        document.removeEventListener('wheel', preventWheelScroll)
+        document.removeEventListener('touchmove', preventWheelScroll)
+      }
+    }
+  }, [isOpen])
+
   // Watch for user authentication and redirect
   useEffect(() => {
     if (shouldRedirect && user && !loading) {
       console.log('AuthModal: User authenticated, redirecting to /app')
       setShouldRedirect(false)
       onClose()
-      router.push('/app')
+      // Use window.location for more reliable redirect
+      window.location.href = '/app'
     }
-  }, [user, shouldRedirect, loading, onClose, router])
+  }, [user, shouldRedirect, loading, onClose])
 
   if (!isOpen) return null
 
@@ -62,9 +108,11 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalP
       } else {
         console.log('AuthModal: Attempting login...')
         await signIn(email, password)
-        console.log('AuthModal: Login successful, will redirect when user state updates...')
-        // Set flag to redirect when user state updates
-        setShouldRedirect(true)
+        console.log('AuthModal: Login successful, redirecting to app...')
+        // Close modal and redirect directly
+        onClose()
+        setSuccess('Login successful! Redirecting...')
+        window.location.href = '/app'
       }
     } catch (err: any) {
       console.error('AuthModal: Authentication error:', err)
@@ -98,8 +146,8 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalP
       } else {
         await signInWithGitHub()
       }
-      // Close modal immediately since OAuth will handle the redirect
-      onClose()
+      // Note: OAuth will redirect to callback, which will redirect to /app
+      // Don't close modal immediately - let the redirect happen
     } catch (err: any) {
       setError(err.message || `Failed to sign in with ${provider}`)
       setLoading(false)
@@ -107,8 +155,45 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalP
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="relative w-full max-w-md mx-4 bg-white rounded-2xl shadow-2xl overflow-hidden">
+    <div 
+      className="fixed inset-0 z-50 overflow-y-auto"
+      style={{
+        position: 'fixed',
+        top: '0px',
+        left: '0px',
+        right: '0px',
+        bottom: '0px',
+        zIndex: 50000,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backdropFilter: 'blur(4px)',
+        WebkitBackdropFilter: 'blur(4px)'
+      }}
+    >
+      <div 
+        className="flex min-h-full items-center justify-center p-4 text-center"
+        style={{
+          minHeight: '100dvh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '1rem',
+          boxSizing: 'border-box'
+        }}
+      >
+        <div 
+          className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white shadow-xl transition-all"
+          style={{
+            width: '100%',
+            maxWidth: '28rem',
+            backgroundColor: '#ffffff',
+            borderRadius: '1rem',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+            transform: 'scale(1)',
+            overflow: 'hidden',
+            margin: 'auto',
+            position: 'relative'
+          }}
+        >
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -118,7 +203,15 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalP
         </button>
 
         {/* Header */}
-        <div className="px-8 pt-8 pb-6 bg-gradient-to-br from-purple-600 via-blue-600 to-green-600 text-white">
+        <div 
+          className="px-8 pt-8 pb-6 text-white"
+          style={{
+            background: 'linear-gradient(135deg, #9333ea 0%, #2563eb 50%, #16a34a 100%)',
+            backgroundSize: '100% 100%',
+            backgroundRepeat: 'no-repeat',
+            backgroundAttachment: 'scroll'
+          }}
+        >
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
               <span className="text-xl font-bold">B</span>
@@ -259,7 +352,23 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalP
             <Button
               type="submit"
               disabled={loading}
-                              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-xl font-semibold transition-all transform hover:scale-105 disabled:transform-none disabled:opacity-70"
+              className="w-full text-white py-3 rounded-xl font-semibold transition-all transform hover:scale-105 disabled:transform-none disabled:opacity-70"
+              style={{
+                background: 'linear-gradient(90deg, #9333ea 0%, #2563eb 100%)',
+                backgroundSize: '100% 100%',
+                backgroundRepeat: 'no-repeat',
+                backgroundAttachment: 'scroll'
+              }}
+              onMouseEnter={(e) => {
+                if (!loading) {
+                  e.currentTarget.style.background = 'linear-gradient(90deg, #7c3aed 0%, #1d4ed8 100%)'
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!loading) {
+                  e.currentTarget.style.background = 'linear-gradient(90deg, #9333ea 0%, #2563eb 100%)'
+                }
+              }}
             >
               {loading ? (
                 <>
@@ -286,6 +395,7 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalP
                 {mode === 'login' ? 'Sign Up' : 'Sign In'}
               </button>
             </p>
+          </div>
           </div>
         </div>
       </div>

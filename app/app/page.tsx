@@ -16,12 +16,9 @@ import { LoadingScreen } from "@/components/LoadingScreen"
 import * as Blockly from "blockly"
 import { toast } from "sonner"
 import { useTheme } from "next-themes"
-// Status types
-type FlowStatus = "ready" | "executing" | "complete" | "error"
 
 export default function BroqLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [flowStatus, setFlowStatus] = useState<FlowStatus>("ready")
   const [workspace, setWorkspace] = useState<Blockly.WorkspaceSvg | null>(null)
   const [isExecuting, setIsExecuting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -192,7 +189,15 @@ export default function BroqLayout() {
             href="/" 
             className="flex items-center gap-3 hover:opacity-80 transition-opacity"
           >
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+            <div 
+              className="w-8 h-8 rounded-lg flex items-center justify-center"
+              style={{
+                background: 'linear-gradient(135deg, #9333ea 0%, #2563eb 100%)',
+                backgroundSize: '100% 100%',
+                backgroundRepeat: 'no-repeat',
+                backgroundAttachment: 'scroll'
+              }}
+            >
               <span className="text-white font-bold text-sm">B</span>
             </div>
             <div className="flex flex-col">
