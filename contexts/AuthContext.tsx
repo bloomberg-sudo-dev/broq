@@ -159,7 +159,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = async (email: string, password: string) => {
     console.log('AuthContext: Signing up user:', email)
     
-    // Use current domain for redirect - works for both localhost and production
+    // Use current domain for redirect URL (works for both localhost and production)
     const emailRedirectTo = `${window.location.origin}/?redirect=app`
     
     const { data, error } = await supabase.auth.signUp({
@@ -190,7 +190,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const signInWithGoogle = async () => {
-    // Use current domain for OAuth callback - works for both localhost and production
+    // Use current domain for OAuth callback URL (works for both localhost and production)
     const redirectTo = `${window.location.origin}/auth/callback`
       
     console.log('AuthContext: Initiating Google OAuth...')
@@ -217,7 +217,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const signInWithGitHub = async () => {
-    // Use current domain for OAuth callback - works for both localhost and production
+    // Use current domain for OAuth callback URL (works for both localhost and production)
     const redirectTo = `${window.location.origin}/auth/callback`
       
     const { error } = await supabase.auth.signInWithOAuth({
