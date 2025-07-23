@@ -284,6 +284,7 @@ export default function BroqLanding() {
       </section>
 
       {/* Live Preview Section */}
+      {/* 
       <section className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-12">
@@ -297,10 +298,12 @@ export default function BroqLanding() {
             <CardContent className="p-8">
               <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 min-h-[300px] relative overflow-hidden">
                 {/* Mock Block Interface */}
+                {/*
                 <div className="flex flex-col items-center space-y-6">
                   <div className="text-sm font-medium text-gray-500 mb-4">🎯 Demo Flow: Ask AI Anything</div>
 
                   {/* Animated Blocks */}
+                  {/*
                   <div className="flex flex-col sm:flex-row items-center gap-6">
                     {demoBlocks.map((block, index) => (
                       <div key={index} className="flex items-center">
@@ -344,8 +347,81 @@ export default function BroqLanding() {
                 </div>
 
                 {/* Floating Elements */}
+                {/*
                 <div className="absolute top-4 right-4 text-2xl animate-bounce">🚀</div>
                 <div className="absolute bottom-4 left-4 text-2xl animate-pulse">✨</div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+      */}
+
+      {/* Video Tutorial Section */}
+      <section className="px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-4">🎥 Watch Broq in Action</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              See how easy it is to build AI flows! This tutorial walks you through Broq's features and shows you how to create your first AI program.
+            </p>
+          </div>
+
+          <Card className="mx-auto max-w-5xl bg-white/80 backdrop-blur-sm shadow-2xl rounded-3xl border-0 overflow-hidden">
+            <CardContent className="p-0">
+              <div className="relative aspect-video bg-gradient-to-br from-gray-50 to-gray-100">
+                <iframe
+                  src="https://www.youtube.com/embed/F6IN3uSI4Sw?si=T6f_JfI70-2jev7y"
+                  title="Broq Tutorial - Build AI Flows with Visual Blocks"
+                  className="absolute inset-0 w-full h-full rounded-3xl"
+                  allowFullScreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                ></iframe>
+              </div>
+              
+              <div className="p-8 bg-gradient-to-br from-purple-50 to-blue-50">
+                <div className="text-center">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">✨ Complete Tutorial & Demo</h3>
+                  <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+                    Learn everything you need to know about building AI flows with Broq. From basic blocks to advanced workflows - we've got you covered!
+                  </p>
+                  
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    {isClient && user ? (
+                      <Button
+                        asChild
+                        className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-full px-8 py-3 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+                      >
+                        <a href="/app">
+                          <Play className="mr-2 h-4 w-4" />
+                          Try It Yourself Now! 🚀
+                        </a>
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => openAuthModal('signup')}
+                        className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-full px-8 py-3 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+                      >
+                        <Play className="mr-2 h-4 w-4" />
+                        Try It Yourself Now! 🚀
+                      </Button>
+                    )}
+                    
+                    <Button
+                      variant="outline"
+                      asChild
+                      className="border-2 border-purple-200 text-purple-700 hover:bg-purple-50 rounded-full px-6 py-3 font-medium transition-all"
+                    >
+                      <a 
+                        href="https://agreeable-idea-6f3.notion.site/Broq-Documentation-2142e0439528805da5cfdd912d41433d" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                      >
+                        📚 Read Documentation
+                      </a>
+                    </Button>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>

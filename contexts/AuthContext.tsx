@@ -198,6 +198,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.log('AuthContext: NODE_ENV:', process.env.NODE_ENV)
     console.log('AuthContext: window.location.origin:', window.location.origin)
     console.log('AuthContext: Current URL:', window.location.href)
+    console.log('AuthContext: IMPORTANT - Check if this redirectTo matches your current domain!')
       
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
