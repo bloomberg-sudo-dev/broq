@@ -38,7 +38,7 @@ export function generateViewport() {
   return {
     width: 'device-width',
     initialScale: 1,
-    themeColor: '#3B82F6',
+    themeColor: '#ea580c',
     colorScheme: 'light',
     // Force consistent rendering across devices
     userScalable: false,
@@ -75,7 +75,7 @@ export default function RootLayout({
               
               /* Force immediate gradient backgrounds */
               .bg-gradient-to-br {
-                background: linear-gradient(135deg, #faf5ff 0%, #eff6ff 50%, #f0fdf4 100%);
+                background: linear-gradient(135deg, #fff7ed 0%, #fefce8 50%, #f0fdf4 100%);
               }
               
               /* CSS-only fade-in animation to prevent hydration issues */
