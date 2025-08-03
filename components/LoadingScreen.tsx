@@ -63,7 +63,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
           <span className="text-white font-bold text-2xl">B</span>
         </div>
           <div className="flex flex-col">
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">broq.</h1>
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Broq</h1>
             <p className="text-lg text-slate-500 dark:text-slate-400">Visual Flow Builder</p>
           </div>
         </div>
