@@ -49,7 +49,7 @@ export function BlocklyToolbar({
 
           <button
             onClick={() => addBlock('output_block')}
-            className="flex items-center gap-1.5 px-2 py-2 rounded-lg border bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-950/50 dark:hover:bg-blue-900/50 dark:text-blue-300 dark:border-blue-800 transition-colors text-xs"
+            className="flex items-center gap-1.5 px-2 py-2 rounded-lg border bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-950/50 dark:hover:bg-orange-900/50 dark:text-orange-300 dark:border-orange-800 transition-colors text-xs"
             title="Display or save the result"
           >
             <FileOutput className="w-3.5 h-3.5" />
@@ -74,7 +74,7 @@ export function BlocklyToolbar({
 
           <button
             onClick={() => addBlock('llm_block')}
-            className="flex items-center gap-1.5 px-2 py-2 rounded-lg border bg-purple-50 hover:bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-950/50 dark:hover:bg-purple-900/50 dark:text-purple-300 dark:border-purple-800 transition-colors text-xs"
+            className="flex items-center gap-1.5 px-2 py-2 rounded-lg border bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-950/50 dark:hover:bg-orange-900/50 dark:text-orange-300 dark:border-orange-800 transition-colors text-xs"
             title="Process text using AI language model"
           >
             <Brain className="w-3.5 h-3.5" />
@@ -85,7 +85,7 @@ export function BlocklyToolbar({
         <div className="grid grid-cols-2 gap-2">
           <button
             onClick={() => addBlock('value_input_block')}
-            className="flex items-center gap-1.5 px-2 py-2 rounded-lg border bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-950/50 dark:hover:bg-blue-900/50 dark:text-blue-300 dark:border-blue-800 transition-colors text-xs"
+            className="flex items-center gap-1.5 px-2 py-2 rounded-lg border bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-950/50 dark:hover:bg-orange-900/50 dark:text-orange-300 dark:border-orange-800 transition-colors text-xs"
             title="Enter any value to use in comparisons and logic blocks"
           >
             <Calculator className="w-3.5 h-3.5" />
@@ -105,7 +105,7 @@ export function BlocklyToolbar({
         <div className="grid grid-cols-1 gap-2">
           <button
             onClick={() => addBlock('variable_input_block')}
-            className="flex items-center gap-1.5 px-2 py-2 rounded-lg border bg-purple-50 hover:bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-950/50 dark:hover:bg-purple-900/50 dark:text-purple-300 dark:border-purple-800 transition-colors text-xs"
+            className="flex items-center gap-1.5 px-2 py-2 rounded-lg border bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-950/50 dark:hover:bg-orange-900/50 dark:text-orange-300 dark:border-orange-800 transition-colors text-xs"
             title="Connect a Get Variable block or other value to use as input"
           >
             <Link className="w-3.5 h-3.5" />

@@ -236,7 +236,7 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalP
         <div 
           className="px-8 pt-8 pb-6 text-white"
           style={{
-            background: 'linear-gradient(135deg, #9333ea 0%, #2563eb 50%, #16a34a 100%)',
+                            background: 'linear-gradient(135deg, #ea580c 0%, #f97316 50%, #fbbf24 100%)',
             backgroundSize: '100% 100%',
             backgroundRepeat: 'no-repeat',
             backgroundAttachment: 'scroll'
@@ -313,7 +313,7 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalP
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                   placeholder="Enter your email"
                 />
               </div>
@@ -331,7 +331,7 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalP
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-11 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  className="w-full pl-11 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                   placeholder="Enter your password"
                 />
                 <button
@@ -357,7 +357,7 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalP
                     required
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                     placeholder="Confirm your password"
                   />
                 </div>
@@ -384,19 +384,19 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalP
               disabled={loading}
               className="w-full text-white py-3 rounded-xl font-semibold transition-all transform hover:scale-105 disabled:transform-none disabled:opacity-70"
               style={{
-                background: 'linear-gradient(90deg, #9333ea 0%, #2563eb 100%)',
+                background: 'linear-gradient(90deg, #ea580c 0%, #f97316 100%)',
                 backgroundSize: '100% 100%',
                 backgroundRepeat: 'no-repeat',
                 backgroundAttachment: 'scroll'
               }}
               onMouseEnter={(e) => {
                 if (!loading) {
-                  e.currentTarget.style.background = 'linear-gradient(90deg, #7c3aed 0%, #1d4ed8 100%)'
+                  e.currentTarget.style.background = 'linear-gradient(90deg, #c2410c 0%, #ea580c 100%)'
                 }
               }}
               onMouseLeave={(e) => {
                 if (!loading) {
-                  e.currentTarget.style.background = 'linear-gradient(90deg, #9333ea 0%, #2563eb 100%)'
+                  e.currentTarget.style.background = 'linear-gradient(90deg, #ea580c 0%, #f97316 100%)'
                 }
               }}
             >
@@ -420,7 +420,7 @@ export function AuthModal({ isOpen, onClose, defaultMode = 'login' }: AuthModalP
               {' '}
               <button
                 onClick={switchMode}
-                className="text-purple-600 hover:text-purple-700 font-semibold hover:underline transition-all"
+                className="text-orange-600 hover:text-orange-700 font-semibold hover:underline transition-all"
               >
                 {mode === 'login' ? 'Sign Up' : 'Sign In'}
               </button>

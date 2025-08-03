@@ -192,7 +192,7 @@ export default function BroqLayout() {
             <div 
               className="w-8 h-8 rounded-lg flex items-center justify-center"
               style={{
-                background: 'linear-gradient(135deg, #9333ea 0%, #2563eb 100%)',
+                background: 'linear-gradient(135deg, #ea580c 0%, #f97316 100%)',
                 backgroundSize: '100% 100%',
                 backgroundRepeat: 'no-repeat',
                 backgroundAttachment: 'scroll'
@@ -229,7 +229,7 @@ export default function BroqLayout() {
             {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </Button>
           <Button
-            className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 py-3 font-semibold transition-all duration-200 hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
+            className="bg-orange-600 hover:bg-orange-700 text-white rounded-full px-8 py-3 font-semibold transition-all duration-200 hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
             onClick={handleRunFlow}
             disabled={isExecuting}
           >
@@ -288,14 +288,14 @@ export default function BroqLayout() {
         </div>
         
         {/* Quick Tip Callout - At bottom */}
-        <div className="mx-4 mb-4 p-4 bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800/50 rounded-xl">
+        <div className="mx-4 mb-4 p-4 bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-800/50 rounded-xl">
           <div className="flex items-start gap-3">
-            <div className="w-6 h-6 bg-blue-100 dark:bg-blue-900/50 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span className="text-blue-600 dark:text-blue-400 text-sm">💡</span>
+            <div className="w-6 h-6 bg-orange-100 dark:bg-orange-900/50 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span className="text-orange-600 dark:text-orange-400 text-sm">💡</span>
             </div>
             <div>
-              <h3 className="font-semibold text-blue-900 dark:text-blue-100 text-sm mb-1">Quick tip</h3>
-              <p className="text-blue-700 dark:text-blue-300 text-sm leading-relaxed">
+              <h3 className="font-semibold text-orange-900 dark:text-orange-100 text-sm mb-1">Quick tip</h3>
+              <p className="text-orange-700 dark:text-orange-300 text-sm leading-relaxed">
                 Drag blocks onto the canvas to start building your AI flow. Each block can send data to the next — just snap them together!
               </p>
             </div>

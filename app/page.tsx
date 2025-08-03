@@ -27,7 +27,7 @@ export default function BroqLanding() {
     {
       type: "input",
       content: "Why is the sky blue?",
-      color: "bg-blue-100 border-blue-300",
+      color: "bg-orange-100 border-orange-300",
     },
     {
       type: "llm",
@@ -107,7 +107,7 @@ export default function BroqLanding() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-green-50">
+          <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-green-50">
       {/* Navigation Bar */}
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
         <div className="w-full px-0">
@@ -117,7 +117,7 @@ export default function BroqLanding() {
                           <div 
               className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg"
               style={{
-                background: 'linear-gradient(135deg, #9333ea 0%, #2563eb 100%)',
+                background: 'linear-gradient(135deg, #ea580c 0%, #f97316 100%)',
                 backgroundSize: '100% 100%',
                 backgroundRepeat: 'no-repeat',
                 backgroundAttachment: 'scroll'
@@ -149,7 +149,7 @@ export default function BroqLanding() {
                   </Button>
                   <Button 
                     asChild
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-full px-6 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+                    className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white rounded-full px-6 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
                   >
                     <a href="/app">
                       <Sparkles className="mr-2 h-4 w-4" />
@@ -168,7 +168,7 @@ export default function BroqLanding() {
                   </Button>
                   <Button 
                     onClick={() => openAuthModal('signup')}
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-full px-6 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+                    className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white rounded-full px-6 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
                   >
                     <Sparkles className="mr-2 h-4 w-4" />
                     Try Broq Now! 🚀
@@ -184,14 +184,14 @@ export default function BroqLanding() {
       <section className="relative overflow-hidden px-4 pt-8 pb-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl text-center">
           <div className="mb-8 flex justify-center">
-            <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-200 px-4 py-2 text-sm font-medium">
+            <Badge className="bg-orange-100 text-orange-800 hover:bg-orange-200 px-4 py-2 text-sm font-medium">
               🎉 Free & Open Source
             </Badge>
           </div>
 
           <h1 className="mb-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl">
             <span className="block">Build AI Solutions with</span>
-            <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-orange-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent">
               Colorful Blocks! 🧱✨
             </span>
           </h1>
@@ -206,7 +206,7 @@ export default function BroqLanding() {
               <Button
                 size="lg"
                 asChild
-                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+                className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
               >
                 <a href="/app">
                   <Play className="mr-2 h-5 w-5" />
@@ -217,7 +217,7 @@ export default function BroqLanding() {
               <Button
                 size="lg"
                 onClick={() => openAuthModal('signup')}
-                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+                className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
               >
                 <Play className="mr-2 h-5 w-5" />
                 Try Broq Now - It's Free! 🎮
@@ -379,7 +379,7 @@ export default function BroqLanding() {
                 ></iframe>
               </div>
               
-              <div className="p-8 bg-gradient-to-br from-purple-50 to-blue-50">
+              <div className="p-8 bg-gradient-to-br from-orange-50 to-yellow-50">
                 <div className="text-center">
                   <h3 className="text-2xl font-bold text-gray-900 mb-3">✨ Complete Tutorial & Demo</h3>
                   <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
@@ -388,30 +388,30 @@ export default function BroqLanding() {
                   
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                     {isClient && user ? (
-                      <Button
-                        asChild
-                        className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-full px-8 py-3 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
-                      >
+                                             <Button
+                         asChild
+                         className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white rounded-full px-8 py-3 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+                       >
                         <a href="/app">
                           <Play className="mr-2 h-4 w-4" />
                           Try It Yourself Now! 🚀
                         </a>
                       </Button>
                     ) : (
-                      <Button
-                        onClick={() => openAuthModal('signup')}
-                        className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-full px-8 py-3 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
-                      >
+                                             <Button
+                         onClick={() => openAuthModal('signup')}
+                         className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white rounded-full px-8 py-3 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+                       >
                         <Play className="mr-2 h-4 w-4" />
                         Try It Yourself Now! 🚀
                       </Button>
                     )}
                     
-                    <Button
-                      variant="outline"
-                      asChild
-                      className="border-2 border-purple-200 text-purple-700 hover:bg-purple-50 rounded-full px-6 py-3 font-medium transition-all"
-                    >
+                                         <Button
+                       variant="outline"
+                       asChild
+                       className="border-2 border-orange-200 text-orange-700 hover:bg-orange-50 rounded-full px-6 py-3 font-medium transition-all"
+                     >
                       <a 
                         href="https://agreeable-idea-6f3.notion.site/Broq-Documentation-2142e0439528805da5cfdd912d41433d" 
                         target="_blank" 
@@ -440,10 +440,10 @@ export default function BroqLanding() {
 
           <div className="grid gap-8 md:grid-cols-3">
             {/* AI Lab */}
-            <Card className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-blue-50 to-blue-100 border-0 rounded-3xl">
+            <Card className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-yellow-50 to-yellow-100 border-0 rounded-3xl">
               <CardContent className="p-8 text-center">
                 <div className="mb-6 flex justify-center">
-                  <div className="rounded-full bg-blue-500 p-4 text-white group-hover:scale-110 transition-transform">
+                  <div className="rounded-full bg-yellow-500 p-4 text-white group-hover:scale-110 transition-transform">
                     <Zap className="h-8 w-8" />
                   </div>
                 </div>
@@ -451,17 +451,17 @@ export default function BroqLanding() {
                 <p className="text-gray-600 mb-6">
                   Build experiments to explore how LLMs reason. Create interactive programs that test prompts, logic, and sentiment. Solve challenges with AI and understand it from inside out.
                 </p>
-                <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100 hover:text-blue-800">
+                <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100 hover:text-yellow-800">
                   Project Based Learning
                 </Badge>
               </CardContent>
             </Card>
 
             {/* Logic Games */}
-            <Card className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-purple-50 to-purple-100 border-0 rounded-3xl">
+            <Card className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-orange-50 to-orange-100 border-0 rounded-3xl">
               <CardContent className="p-8 text-center">
                 <div className="mb-6 flex justify-center">
-                  <div className="rounded-full bg-purple-500 p-4 text-white group-hover:scale-110 transition-transform">
+                  <div className="rounded-full bg-orange-500 p-4 text-white group-hover:scale-110 transition-transform">
                     <Gamepad2 className="h-8 w-8" />
                   </div>
                 </div>
@@ -469,7 +469,7 @@ export default function BroqLanding() {
                 <p className="text-gray-600 mb-6">
                   Create choose-your-own adventure games, quizzes, and interactive stories with branching AI conversations.
                 </p>
-                <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100 hover:text-purple-800">
+                <Badge className="bg-orange-100 text-orange-800 hover:bg-orange-100 hover:text-orange-800">
                   Creative & Design Thinking
                 </Badge>
               </CardContent>
@@ -523,10 +523,10 @@ export default function BroqLanding() {
       */}
 
       {/* Call to Action Section */}
-      <section className="px-4 py-20 sm:px-6 lg:px-8 bg-gradient-to-r from-purple-600 via-blue-600 to-green-600">
+      <section className="px-4 py-20 sm:px-6 lg:px-8 bg-gradient-to-r from-orange-600 via-orange-500 to-yellow-500">
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="mb-6 text-4xl font-bold text-white sm:text-5xl">Ready to Build Something Amazing? 🚀</h2>
-          <p className="mb-8 text-xl text-purple-100">
+          <p className="mb-8 text-xl text-orange-100">
             Join thousands of creators, educators, and AI enthusiasts who are building the future with visual
             programming blocks!
           </p>
@@ -536,7 +536,7 @@ export default function BroqLanding() {
               <Button
                 size="lg"
                 asChild
-                className="bg-white text-purple-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+                className="bg-white text-orange-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
               >
                 <a href="/app">
                   <Sparkles className="mr-2 h-5 w-5" />
@@ -547,7 +547,7 @@ export default function BroqLanding() {
               <Button
                 size="lg"
                 onClick={() => openAuthModal('signup')}
-                className="bg-white text-purple-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+                className="bg-white text-orange-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
               >
                 <Sparkles className="mr-2 h-5 w-5" />
                 Try Broq Now - It's Free! 🎉
@@ -557,7 +557,7 @@ export default function BroqLanding() {
             <Button
               variant="outline"
               size="lg"
-              className="border-2 border-white text-white hover:bg-white hover:text-purple-600 px-8 py-4 text-lg font-semibold rounded-full bg-transparent"
+              className="border-2 border-white text-white hover:bg-white hover:text-orange-600 px-8 py-4 text-lg font-semibold rounded-full bg-transparent"
             >
               
                 <Bot className="mr-2 h-5 w-5" />
@@ -567,7 +567,7 @@ export default function BroqLanding() {
             </a>
           </div>
 
-          <div className="mt-8 text-purple-100">
+          <div className="mt-8 text-orange-100">
             <p className="text-sm">✨ Build something cool • 🧱 Open source forever • 🚀 Deploy anywhere</p>
           </div>
         </div>
@@ -581,7 +581,7 @@ export default function BroqLanding() {
               <div 
                 className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold"
                 style={{
-                  background: 'linear-gradient(135deg, #9333ea 0%, #2563eb 100%)',
+                  background: 'linear-gradient(135deg, #ea580c 0%, #f97316 100%)',
                   backgroundSize: '100% 100%',
                   backgroundRepeat: 'no-repeat',
                   backgroundAttachment: 'scroll'

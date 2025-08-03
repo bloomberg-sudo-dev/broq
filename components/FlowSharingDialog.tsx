@@ -93,7 +93,7 @@ function ImportPreview({ flowData, onImport, onCancel }: ImportPreviewProps) {
 
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div className="flex items-center gap-2">
-            <FileText className="w-4 h-4 text-blue-500" />
+                            <FileText className="w-4 h-4 text-orange-500" />
             <span>{flowData.metadata.blockCount} blocks</span>
           </div>
           <div className="flex items-center gap-2">
@@ -140,7 +140,7 @@ function ImportPreview({ flowData, onImport, onCancel }: ImportPreviewProps) {
           <div className="space-y-2">
             {flowData.preview.blocks.map((block, index) => (
               <div key={index} className="flex items-center gap-2 text-sm">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
                 <span>{block.label}</span>
                 {block.config?.model && (
                   <Badge variant="outline" className="text-xs">
@@ -176,7 +176,7 @@ function ImportPreview({ flowData, onImport, onCancel }: ImportPreviewProps) {
         <Button variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <Button onClick={onImport} className="bg-blue-600 hover:bg-blue-700">
+                    <Button onClick={onImport} className="bg-orange-600 hover:bg-orange-700">
           <Download className="w-4 h-4 mr-2" />
           Import Flow
         </Button>
@@ -505,14 +505,14 @@ export function FlowSharingDialog({ workspace, trigger }: FlowSharingDialogProps
                     </Button>
                   </div>
 
-                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                  <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <CheckCircle className="w-4 h-4 text-blue-600" />
-                      <span className="font-medium text-blue-700 dark:text-blue-300 text-sm">
+                      <CheckCircle className="w-4 h-4 text-orange-600" />
+                      <span className="font-medium text-orange-700 dark:text-orange-300 text-sm">
                         Supported Formats
                       </span>
                     </div>
-                    <ul className="text-blue-600 dark:text-blue-400 text-sm space-y-1">
+                    <ul className="text-orange-600 dark:text-orange-400 text-sm space-y-1">
                       <li>• .broq files (enhanced format with metadata)</li>
                       <li>• .json files (legacy Blockly format)</li>
                       <li>• Shared flow URLs</li>

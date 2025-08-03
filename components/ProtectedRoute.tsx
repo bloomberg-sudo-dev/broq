@@ -40,7 +40,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-100 dark:bg-slate-950">
         <div className="text-center">
-          <div className="w-8 h-8 animate-spin rounded-full border-2 border-blue-500 border-t-transparent mx-auto mb-4"></div>
+                      <div className="w-8 h-8 animate-spin rounded-full border-2 border-orange-500 border-t-transparent mx-auto mb-4"></div>
           <p className="text-gray-600 dark:text-gray-400">Loading...</p>
         </div>
       </div>

@@ -101,7 +101,7 @@ export function OutputPanel({ outputs, isExecuting }: OutputPanelProps) {
                       {getBlockLabel(result.blockType)}
                     </span>
                     {result.model && (
-                      <span className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full dark:bg-blue-900/30 dark:text-blue-300">
+                      <span className="px-2 py-1 bg-orange-50 text-orange-700 text-xs rounded-full dark:bg-orange-900/30 dark:text-orange-300">
                         {result.model}
                       </span>
                     )}

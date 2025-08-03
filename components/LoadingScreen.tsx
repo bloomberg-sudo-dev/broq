@@ -54,7 +54,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
                   <div 
           className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
           style={{
-            background: 'linear-gradient(135deg, #9333ea 0%, #2563eb 100%)',
+                            background: 'linear-gradient(135deg, #ea580c 0%, #f97316 100%)',
             backgroundSize: '100% 100%',
             backgroundRepeat: 'no-repeat',
             backgroundAttachment: 'scroll'
@@ -70,7 +70,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
         
         {/* Loading animation */}
         <div className="flex items-center gap-3 mt-4 animate-fade-in-delay-1">
-          <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
+                        <Loader2 className="w-6 h-6 animate-spin text-orange-500" />
           <span className="text-slate-600 dark:text-slate-400 font-medium transition-all duration-300">
             {loadingText}
           </span>
@@ -82,7 +82,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
             className="h-full rounded-full transition-all duration-300 ease-out"
             style={{ 
               width: `${progress}%`,
-              background: 'linear-gradient(90deg, #9333ea 0%, #2563eb 100%)',
+                              background: 'linear-gradient(90deg, #ea580c 0%, #f97316 100%)',
               backgroundSize: '100% 100%',
               backgroundRepeat: 'no-repeat',
               backgroundAttachment: 'scroll'

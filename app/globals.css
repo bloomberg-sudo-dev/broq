@@ -29,7 +29,7 @@
   }
   
   .bg-gradient-to-r {
-    background-color: #9333ea; /* Fallback */
+    background-color: #ea580c; /* Fallback */
   }
 }
 
@@ -55,11 +55,11 @@
 
   /* Ensure consistent gradient rendering across all browsers */
   .broq-gradient-header {
-    background: #9333ea; /* Fallback */
-    background: -webkit-linear-gradient(135deg, #9333ea 0%, #2563eb 50%, #16a34a 100%);
-    background: -moz-linear-gradient(135deg, #9333ea 0%, #2563eb 50%, #16a34a 100%);
-    background: -o-linear-gradient(135deg, #9333ea 0%, #2563eb 50%, #16a34a 100%);
-    background: linear-gradient(135deg, #9333ea 0%, #2563eb 50%, #16a34a 100%);
+    background: #ea580c; /* Fallback */
+    background: -webkit-linear-gradient(135deg, #ea580c 0%, #f97316 50%, #fbbf24 100%);
+    background: -moz-linear-gradient(135deg, #ea580c 0%, #f97316 50%, #fbbf24 100%);
+    background: -o-linear-gradient(135deg, #ea580c 0%, #f97316 50%, #fbbf24 100%);
+    background: linear-gradient(135deg, #ea580c 0%, #f97316 50%, #fbbf24 100%);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-attachment: scroll;
@@ -69,11 +69,11 @@
   }
 
   .broq-gradient-button {
-    background: #9333ea; /* Fallback */
-    background: -webkit-linear-gradient(90deg, #9333ea 0%, #2563eb 100%);
-    background: -moz-linear-gradient(90deg, #9333ea 0%, #2563eb 100%);
-    background: -o-linear-gradient(90deg, #9333ea 0%, #2563eb 100%);
-    background: linear-gradient(90deg, #9333ea 0%, #2563eb 100%);
+    background: #ea580c; /* Fallback */
+    background: -webkit-linear-gradient(90deg, #ea580c 0%, #f97316 100%);
+    background: -moz-linear-gradient(90deg, #ea580c 0%, #f97316 100%);
+    background: -o-linear-gradient(90deg, #ea580c 0%, #f97316 100%);
+    background: linear-gradient(90deg, #ea580c 0%, #f97316 100%);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-attachment: scroll;
@@ -83,11 +83,11 @@
   }
 
   .broq-gradient-button:hover {
-    background: #7c3aed; /* Fallback */
-    background: -webkit-linear-gradient(90deg, #7c3aed 0%, #1d4ed8 100%);
-    background: -moz-linear-gradient(90deg, #7c3aed 0%, #1d4ed8 100%);
-    background: -o-linear-gradient(90deg, #7c3aed 0%, #1d4ed8 100%);
-    background: linear-gradient(90deg, #7c3aed 0%, #1d4ed8 100%);
+    background: #c2410c; /* Fallback */
+    background: -webkit-linear-gradient(90deg, #c2410c 0%, #ea580c 100%);
+    background: -moz-linear-gradient(90deg, #c2410c 0%, #ea580c 100%);
+    background: -o-linear-gradient(90deg, #c2410c 0%, #ea580c 100%);
+    background: linear-gradient(90deg, #c2410c 0%, #ea580c 100%);
   }
 
 
@@ -316,7 +316,7 @@
 
 /* Smooth focus rings */
 *:focus-visible {
-  outline: 2px solid rgb(139 92 246);
+  outline: 2px solid rgb(249 115 22);
   outline-offset: 2px;
   border-radius: 8px;
 }
@@ -328,7 +328,7 @@ button {
 
 /* Notion-like selection styling */
 ::selection {
-  background-color: rgba(139, 92, 246, 0.15);
+  background-color: rgba(249, 115, 22, 0.15);
 }
 
 /* Typography improvements */
