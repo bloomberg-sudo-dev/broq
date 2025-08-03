@@ -192,7 +192,7 @@ export default function BroqLanding() {
           <h1 className="mb-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl">
             <span className="block">Build AI Solutions with</span>
             <span className="bg-gradient-to-r from-orange-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent">
-              Colorful Blocks! 🧱✨
+              Colorful Blocks! 
             </span>
           </h1>
 
