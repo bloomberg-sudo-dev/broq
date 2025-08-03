@@ -21,7 +21,7 @@
 
 ---
 
-## 🎥 What Is Broq?
+## What Is Broq?
 
 Broq is a **visual programming tool** designed to make LLM workflows modular, remixable, and fun.  
 It's like **Scratch for prompt engineering** — build GPT pipelines by connecting colorful blocks.
@@ -32,7 +32,7 @@ It's like **Scratch for prompt engineering** — build GPT pipelines by connecti
 
 ---
 
-## 🖼️ Demo Preview
+## Demo Preview
 
 | Drag & Drop Blocks | Run the Flow | Load Example Template |
 |--------------------|--------------|------------------------|
@@ -40,45 +40,45 @@ It's like **Scratch for prompt engineering** — build GPT pipelines by connecti
 
 ---
 
-## ✨ Features
+## Features
 
-- 🧱 **Visual Programming** – Drag and drop blocks to build LLM apps
-- 💬 **LLM-Powered** – Works with GPT-4, Claude, and custom APIs
-- 🧠 **If/Then/Else Logic** – Add basic flow control in seconds
-- 🔗 **Boolean Logic Blocks** – Hexagonal comparison (=, ≠, >, <) and logic (AND, OR, NOT) operators
-- 📊 **Variable System** – Store, retrieve, and connect variable values between blocks
-- 🧮 **Value Input Blocks** – Enter values and connect dynamic inputs to your flows
-- 📦 **Flow Management** – Save, load, and remix flows
-- 🧾 **Multiline Input Support**
-- 🎨 **Light/Dark Mode Theming**
-- 🔁 **Repeat & Remix-Friendly** – A creative playground for AI builders
+- **Visual Programming** – Drag and drop blocks to build LLM apps
+- **LLM-Powered** – Works with GPT-4, Claude, and custom APIs
+- **If/Then/Else Logic** – Add basic flow control in seconds
+- **Boolean Logic Blocks** – Hexagonal comparison (=, ≠, >, <) and logic (AND, OR, NOT) operators
+- **Variable System** – Store, retrieve, and connect variable values between blocks
+- **Value Input Blocks** – Enter values and connect dynamic inputs to your flows
+- **Flow Management** – Save, load, and remix flows
+- **Multiline Input Support**
+- **Light/Dark Mode Theming**
+- **Repeat & Remix-Friendly** – A creative playground for AI builders
 
 ---
 
-## 💡 Use Cases
+## Use Cases
 
-### 🧱 Visual Prompt Builder  
+### Visual Prompt Builder  
 Craft and refine prompts with block logic instead of code.
 
-### 🔁 Batch Text Transformer  
+### Batch Text Transformer  
 Apply the same LLM prompt to multiple chunks of input — great for rewriting lists, titles, or notes.
 
-### 🧩 If/Then Prompt Logic  
+### If/Then Prompt Logic  
 Use simple conditions to dynamically decide how your GPT workflows respond to input.
 
-### 🔗 Smart Logic Flows  
+### Smart Logic Flows  
 Build complex decision trees with boolean operators, variable comparisons, and dynamic value connections — no coding required.
 
 ---
 
-## 🛠️ Getting Started
+## Getting Started
 
-### 🔧 Prerequisites
+### Prerequisites
 
 - Node.js (v16+ recommended)
 - npm (comes with Node)
 
-### 💻 Local Setup
+### Local Setup
 
 ```bash
 # 1. Clone the repo
@@ -96,34 +96,34 @@ Visit `http://localhost:3000` and start building!
 
 ---
 
-## 🌐 Deployment
+## Deployment
 
 Deploy to your favorite platform (Vercel, Netlify, etc.):
 
 1. Push to GitHub
 2. Connect your repo to your hosting provider
 3. Set your environment variables (if needed)
-4. 🎉 Share your Broq instance with the world
+4. Share your Broq instance with the world
 
 ---
 
-## 📚 Documentation
+## Documentation
 
-📖 View full documentation & guides on [Notion](https://agreeable-idea-6f3.notion.site/Broq-Documentation-2142e0439528805da5cfdd912d41433d)
+View full documentation & guides on [Notion](https://agreeable-idea-6f3.notion.site/Broq-Documentation-2142e0439528805da5cfdd912d41433d)
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Broq is open-source and built to grow with the community.
 We welcome:
 
-* 🧩 New blocks or logic types
-* 🪄 UI improvements
-* 🐛 Bug fixes
-* ✍️ Better docs or templates
+* New blocks or logic types
+* UI improvements
+* Bug fixes
+* Better docs or templates
 
-### 👣 How to Contribute
+### How to Contribute
 
 ```bash
 # Fork + clone the repo, then
@@ -135,7 +135,7 @@ Start building or open a [good first issue](https://github.com/yourusername/broq
 
 ---
 
-## 📦 Folder Structure
+## Folder Structure
 
 ```bash
 .
@@ -148,7 +148,7 @@ Start building or open a [good first issue](https://github.com/yourusername/broq
 
 ---
 
-## 🧠 Philosophy
+## Philosophy
 
 LLMs are powerful — but code isn't always the right interface.
 
@@ -162,35 +162,35 @@ It's a tool for:
 
 ---
 
-## 📬 Contact Me
+## Contact Me
 
 Have ideas, feedback, or want to jam on AI tools together?
 
 Reach out directly:
 
-- 🧠 [Twitter / X](https://twitter.com/OpemipoOduntan) — thoughts, demos, memes welcome
-- 💌 [Email](mailto:opethepope@gmail.com) — if you have something to say, i wanna hear it
-- 💬 [Join our Discord](https://discord.com/invite/py6tw3f28N) — for contributors & Broq builders
+- [Twitter / X](https://twitter.com/OpemipoOduntan) — thoughts, demos, memes welcome
+- [Email](mailto:opethepope@gmail.com) — if you have something to say, i wanna hear it
+- [Join our Discord](https://discord.com/invite/py6tw3f28N) — for contributors & Broq builders
 
-> 🪄 I'm always excited to hear from developers, educators, and curious tinkerers.
+> I'm always excited to hear from developers, educators, and curious tinkerers.
 
 ---
 
-## ✨ **Key Updates Made:**
+## **Key Updates Made:**
 
 ### **Enhanced Features Section:**
-- **🔗 Boolean Logic Blocks** – Added hexagonal comparison and logic operators
-- **📊 Variable System** – Highlighted the store/retrieve/connect capabilities  
-- **🧮 Value Input Blocks** – Mentioned dynamic input connections
+- **Boolean Logic Blocks** – Added hexagonal comparison and logic operators
+- **Variable System** – Highlighted the store/retrieve/connect capabilities  
+- **Value Input Blocks** – Mentioned dynamic input connections
 
 ---
 
-## 📜 License
+## License
 
 [MIT](https://mit-license.org/) — free to use, fork, remix. 
 
 > Built with ❤️ by [@bloomberg-sudo-dev](https://github.com/bloomberg-sudo-dev/).
 
-* 🧱 [Blockly](https://developers.google.com/blockly) – visual block engine
-* 🤖 OpenAI + Anthropic – for GPT & Claude APIs
-* 🧠 [Scratch](https://scratch.mit.edu) – for inspiring creativity with blocks
+* [Blockly](https://developers.google.com/blockly) – visual block engine
+* OpenAI + Anthropic – for GPT & Claude APIs
+* [Scratch](https://scratch.mit.edu) – for inspiring creativity with blocks
