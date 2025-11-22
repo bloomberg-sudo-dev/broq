@@ -11,41 +11,14 @@ import { AuthRedirect } from "@/components/AuthRedirect"
 import { toast } from "sonner"
 
 export default function BroqLanding() {
-  const [currentDemo, setCurrentDemo] = useState(0)
   const [authModalOpen, setAuthModalOpen] = useState(false)
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login')
   const [isClient, setIsClient] = useState(false)
   
   const { user, signOut, signInWithGoogle, signInWithGitHub, loading } = useAuth()
 
-  // Client-side only rendering for auth-dependent content
   useEffect(() => {
     setIsClient(true)
-  }, [])
-
-  const demoBlocks = [
-    {
-      type: "input",
-      content: "Why is the sky blue?",
-      color: "bg-orange-100 border-orange-300",
-    },
-    {
-      type: "llm",
-      content: "OpenAI GPT-4",
-      color: "bg-green-100 border-green-300",
-    },
-    {
-      type: "output",
-      content: "Scientific explanation...",
-      color: "bg-orange-100 border-orange-300",
-    },
-  ]
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentDemo((prev) => (prev + 1) % 3)
-    }, 2000)
-    return () => clearInterval(interval)
   }, [])
 
   // Check for auth redirect from protected route
@@ -55,24 +28,14 @@ export default function BroqLanding() {
     
     if (authParam === 'required') {
       openAuthModal('login')
-      // Clean up URL
       window.history.replaceState({}, document.title, window.location.pathname)
     } else if (authParam === 'error') {
-      // Handle OAuth errors from callback
       const errorMessage = urlParams.get('error_message') || 'Authentication failed'
-      console.error('OAuth error:', errorMessage)
-      
-      // Show auth modal with error
       openAuthModal('login')
-      
-      // Show toast notification with error
       toast.error(errorMessage)
-      
-      // Clean up URL
       window.history.replaceState({}, document.title, window.location.pathname)
     }
     
-    // Also check for redirect parameter and redirect to app if user is already authenticated
     if (urlParams.get('redirect') === 'app' && user) {
       window.location.href = '/app'
     }
@@ -93,67 +56,57 @@ export default function BroqLanding() {
 
   const handleSocialLogin = async (provider: 'google' | 'github') => {
     try {
-      console.log(`Starting ${provider} login...`)
       if (provider === 'google') {
         await signInWithGoogle()
       } else {
         await signInWithGitHub()
       }
-      console.log(`${provider} login initiated - will redirect to callback`)
-      // OAuth will redirect to callback, don't close modal immediately
     } catch (error) {
       console.error(`Error signing in with ${provider}:`, error)
     }
   }
 
   return (
-          <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-green-50">
+    <div className="min-h-screen bg-orange-50 overflow-x-hidden font-sans selection:bg-orange-200">
       {/* Navigation Bar */}
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
-        <div className="w-full px-0">
-          <div className="flex h-16 items-center justify-between">
-            {/* Logo - Moved to extreme left edge */}
-            <div className="flex items-center gap-3 ml-4 sm:ml-6 lg:ml-8">
-                          <div 
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg"
-              style={{
-                background: 'linear-gradient(135deg, #ea580c 0%, #f97316 100%)',
-                backgroundSize: '100% 100%',
-                backgroundRepeat: 'no-repeat',
-                backgroundAttachment: 'scroll'
-              }}
-            >
-              B
-            </div>
+      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-xl border-b-2 border-orange-100">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex h-20 items-center justify-between">
+            {/* Logo */}
+            <div className="flex items-center gap-3 group cursor-pointer">
+              <div 
+                className="w-12 h-12 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-[4px_4px_0px_0px_rgba(234,88,12,0.3)] group-hover:shadow-[2px_2px_0px_0px_rgba(234,88,12,0.3)] group-hover:translate-x-[2px] group-hover:translate-y-[2px] transition-all duration-200"
+                style={{ background: 'linear-gradient(135deg, #ea580c 0%, #f97316 100%)' }}
+              >
+                B
+              </div>
               <div className="flex flex-col">
-                <span className="text-xl font-bold text-gray-900">Broq</span>
-                <span className="text-xs text-gray-500 -mt-1">Visual Flow Builder</span>
+                <span className="text-2xl font-black tracking-tight text-gray-900">Broq</span>
+                <span className="text-xs font-bold text-orange-500 tracking-wide uppercase">Visual Builder</span>
               </div>
             </div>
 
-            {/* Auth Buttons - Always show same layout */}
-            <div className="flex items-center gap-3 mr-4 sm:mr-6 lg:mr-8" suppressHydrationWarning>
+            {/* Auth Buttons */}
+            <div className="flex items-center gap-4" suppressHydrationWarning>
               {isClient && user ? (
                 <>
-                  <div className="hidden sm:flex items-center gap-2 text-gray-600">
-                    <User className="w-4 h-4" />
-                    <span className="text-sm truncate max-w-32">{user.email}</span>
+                  <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-orange-100/50 rounded-full border border-orange-200">
+                    <User className="w-4 h-4 text-orange-600" />
+                    <span className="text-sm font-semibold text-orange-800 truncate max-w-[150px]">{user.email}</span>
                   </div>
                   <Button
                     variant="ghost"
                     onClick={handleSignOut}
-                    className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full px-4"
+                    className="text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-xl font-bold"
                   >
-                    <LogOut className="w-4 h-4 mr-2" />
                     Sign Out
                   </Button>
                   <Button 
                     asChild
-                    className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white rounded-full px-6 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+                    className="bg-orange-600 hover:bg-orange-700 text-white rounded-xl px-6 py-6 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all border-2 border-black"
                   >
                     <a href="/app">
-                      <Sparkles className="mr-2 h-4 w-4" />
-                      Try broq now! 🚀
+                      Launch App 🚀
                     </a>
                   </Button>
                 </>
@@ -162,16 +115,15 @@ export default function BroqLanding() {
                   <Button
                     variant="ghost"
                     onClick={() => openAuthModal('login')}
-                    className="hidden sm:inline-flex text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full px-4"
+                    className="hidden sm:inline-flex text-gray-600 hover:text-orange-600 hover:bg-orange-50 rounded-xl font-bold text-base"
                   >
                     Log In
                   </Button>
                   <Button 
                     onClick={() => openAuthModal('signup')}
-                    className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white rounded-full px-6 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+                    className="bg-orange-600 hover:bg-orange-700 text-white rounded-xl px-8 py-6 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all border-2 border-black text-base"
                   >
-                    <Sparkles className="mr-2 h-4 w-4" />
-                    Try Broq Now! 🚀
+                    Start Building Free ⚡
                   </Button>
                 </>
               )}
@@ -181,445 +133,218 @@ export default function BroqLanding() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden px-4 pt-8 pb-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl text-center">
-          <div className="mb-8 flex justify-center">
-            <Badge className="bg-orange-100 text-orange-800 hover:bg-orange-200 px-4 py-2 text-sm font-medium">
-              🎉 Free & Open Source
-            </Badge>
+      <section className="relative pt-20 pb-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        {/* Decorative Floating Elements */}
+        <div className="absolute top-20 left-10 w-24 h-24 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute top-40 right-10 w-24 h-24 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-24 h-24 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+
+        <div className="mx-auto max-w-7xl text-center relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8 transform -rotate-2 hover:rotate-0 transition-transform duration-300 cursor-default">
+            <Sparkles className="w-5 h-5 text-orange-500 fill-orange-500" />
+            <span className="font-bold text-sm tracking-wide">NOW OPEN SOURCE</span>
           </div>
 
-          <h1 className="mb-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl">
-            <span className="block">Build AI Solutions with</span>
-            <span className="bg-gradient-to-r from-orange-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent">
-              Colorful Blocks! 
+          <h1 className="mb-8 text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-gray-900 leading-[0.9]">
+            Build AI Logic <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-yellow-500 drop-shadow-sm">
+              Without Code
             </span>
           </h1>
 
-          <p className="mx-auto mb-8 max-w-2xl text-xl text-gray-600 sm:text-2xl">
-            Broq is like <strong>Scratch for LLMs</strong> — drag, drop, and build AI programs without writing a
-            single line of code! 🚀
+          <p className="mx-auto mb-10 max-w-2xl text-xl md:text-2xl text-gray-600 font-medium leading-relaxed">
+            Drag, drop, and connect colorful blocks to create powerful AI agents. 
+            It's like <span className="inline-block px-2 py-1 bg-yellow-200 -rotate-1 rounded-lg border border-black font-bold text-black transform hover:scale-110 transition-transform">Scratch</span> but for LLMs!
           </p>
 
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="flex flex-col items-center justify-center gap-6 sm:flex-row">
             {isClient && user ? (
               <Button
                 size="lg"
                 asChild
-                className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+                className="bg-black hover:bg-gray-800 text-white px-10 py-8 text-xl font-bold rounded-2xl shadow-[6px_6px_0px_0px_#f97316] hover:shadow-[3px_3px_0px_0px_#f97316] hover:translate-x-[3px] hover:translate-y-[3px] transition-all border-2 border-black"
               >
                 <a href="/app">
-                  <Play className="mr-2 h-5 w-5" />
-                  Try broq now! 🎮
+                  <Play className="mr-3 h-6 w-6 fill-white" />
+                  Open Studio
                 </a>
               </Button>
             ) : (
               <Button
                 size="lg"
                 onClick={() => openAuthModal('signup')}
-                className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+                className="bg-black hover:bg-gray-800 text-white px-10 py-8 text-xl font-bold rounded-2xl shadow-[6px_6px_0px_0px_#f97316] hover:shadow-[3px_3px_0px_0px_#f97316] hover:translate-x-[3px] hover:translate-y-[3px] transition-all border-2 border-black"
               >
-                <Play className="mr-2 h-5 w-5" />
-                Try Broq Now - It's Free! 🎮
+                <Play className="mr-3 h-6 w-6 fill-white" />
+                Try Broq Free
               </Button>
             )}
             <Button
               variant="outline"
               size="lg"
               asChild
-              className="px-8 py-4 text-lg font-semibold rounded-full border-2 hover:bg-gray-50 bg-transparent"
+              className="bg-white hover:bg-gray-50 text-black px-10 py-8 text-xl font-bold rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,0.1)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,0.1)] hover:translate-x-[3px] hover:translate-y-[3px] transition-all border-2 border-black"
             >
               <a href="https://github.com/bloomberg-sudo-dev/broq" target="_blank" rel="noopener noreferrer">
-                <Github className="mr-2 h-5 w-5" />
-                View on GitHub
-                <Star className="ml-2 h-4 w-4 fill-yellow-400 text-yellow-400" />
+                <Github className="mr-3 h-6 w-6" />
+                Star on GitHub
               </a>
             </Button>
           </div>
 
-          {/* Quick Social Login - Only show if not authenticated */}
+          {/* Quick Login Bubbles */}
           {!user && (
-            <div className="mt-8 flex flex-col items-center">
-              <p className="text-gray-500 text-sm mb-4">Or sign up instantly with:</p>
-              <div className="flex gap-4">
-                <Button
+            <div className="mt-12 animate-fade-in-up">
+              <p className="text-gray-500 font-bold text-sm uppercase tracking-widest mb-4">Quick Start With</p>
+              <div className="flex justify-center gap-4">
+                <button 
                   onClick={() => handleSocialLogin('google')}
-                  variant="outline"
-                  size="sm"
-                  className="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-full px-6 py-2 font-medium transition-all flex items-center gap-2"
+                  className="p-4 bg-white rounded-2xl border-2 border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
                 >
-                  <svg className="w-4 h-4" viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                  </svg>
-                  Google
-                </Button>
-                <Button
+                  <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-6 h-6" />
+                </button>
+                <button 
                   onClick={() => handleSocialLogin('github')}
-                  variant="outline"
-                  size="sm"
-                  className="bg-gray-900 hover:bg-gray-800 text-white border border-gray-900 rounded-full px-6 py-2 font-medium transition-all flex items-center gap-2"
+                  className="p-4 bg-gray-900 rounded-2xl border-2 border-gray-900 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
                 >
-                  <Github className="w-4 h-4" />
-                  GitHub
-                </Button>
+                  <Github className="w-6 h-6 text-white" />
+                </button>
               </div>
             </div>
           )}
-          {/*
-          <div className="mt-12 flex justify-center items-center gap-8 text-sm text-gray-500">
-            <div className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              <span>100+ Builders</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-              <span>500+ GitHub Stars</span>
-            </div>
-          </div> 
-          */}
         </div>
       </section>
 
-      {/* Live Preview Section */}
-      {/* 
-      <section className="px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-4">🧱 Build with Blocks - Live Preview!</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Watch how simple it is to create AI program. No coding required!
-            </p>
-          </div>
-
-          <Card className="mx-auto max-w-4xl bg-white/80 backdrop-blur-sm shadow-2xl rounded-3xl border-0">
-            <CardContent className="p-8">
-              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 min-h-[300px] relative overflow-hidden">
-                {/* Mock Block Interface */}
-                {/*
-                <div className="flex flex-col items-center space-y-6">
-                  <div className="text-sm font-medium text-gray-500 mb-4">🎯 Demo Flow: Ask AI Anything</div>
-
-                  {/* Animated Blocks */}
-                  {/*
-                  <div className="flex flex-col sm:flex-row items-center gap-6">
-                    {demoBlocks.map((block, index) => (
-                      <div key={index} className="flex items-center">
-                        <div
-                          className={`
-                            ${block.color} 
-                            border-2 rounded-2xl p-4 min-w-[200px] text-center
-                            transform transition-all duration-500 hover:scale-105
-                            ${currentDemo >= index ? "opacity-100 translate-y-0" : "opacity-50 translate-y-2"}
-                          `}
-                        >
-                          <div className="font-semibold text-gray-800 mb-1">{block.type.toUpperCase()}</div>
-                          <div className="text-sm text-gray-600">{block.content}</div>
-                        </div>
-
-                        {index < demoBlocks.length - 1 && (
-                          <ArrowRight className="h-6 w-6 text-gray-400 mx-2 hidden sm:block" />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="mt-8 text-center">
-                    {user ? (
-                      <Button asChild className="bg-green-500 hover:bg-green-600 text-white rounded-full px-6 py-2">
-                        <a href="/app">
-                          <Play className="mr-2 h-4 w-4" />
-                          Run Flow ▶️
-                        </a>
-                      </Button>
-                    ) : (
-                      <Button 
-                        onClick={() => openAuthModal('signup')}
-                        className="bg-green-500 hover:bg-green-600 text-white rounded-full px-6 py-2"
-                      >
-                        <Play className="mr-2 h-4 w-4" />
-                        Run Flow ▶️
-                      </Button>
-                    )}
-                  </div>
-                </div>
-
-                {/* Floating Elements */}
-                {/*
-                <div className="absolute top-4 right-4 text-2xl animate-bounce">🚀</div>
-                <div className="absolute bottom-4 left-4 text-2xl animate-pulse">✨</div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-      */}
-
-      {/* Video Tutorial Section */}
-      <section className="px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-4">🎥 Watch Broq in Action</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              See how easy it is to build AI flows! This tutorial walks you through Broq's features and shows you how to create your first AI program.
-            </p>
-          </div>
-
-          <Card className="mx-auto max-w-5xl bg-white/80 backdrop-blur-sm shadow-2xl rounded-3xl border-0 overflow-hidden">
-            <CardContent className="p-0">
-              <div className="relative aspect-video bg-gradient-to-br from-gray-50 to-gray-100">
-                <iframe
-                  src="https://www.youtube.com/embed/F6IN3uSI4Sw?si=T6f_JfI70-2jev7y"
-                  title="Broq Tutorial - Build AI Flows with Visual Blocks"
-                  className="absolute inset-0 w-full h-full rounded-3xl"
-                  allowFullScreen
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                ></iframe>
-              </div>
-              
-              <div className="p-8 bg-gradient-to-br from-orange-50 to-yellow-50">
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3">✨ Complete Tutorial & Demo</h3>
-                  <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-                    Learn everything you need to know about building AI flows with Broq. From basic blocks to advanced workflows - we've got you covered!
-                  </p>
-                  
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    {isClient && user ? (
-                                             <Button
-                         asChild
-                         className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white rounded-full px-8 py-3 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
-                       >
-                        <a href="/app">
-                          <Play className="mr-2 h-4 w-4" />
-                          Try It Yourself Now! 🚀
-                        </a>
-                      </Button>
-                    ) : (
-                                             <Button
-                         onClick={() => openAuthModal('signup')}
-                         className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white rounded-full px-8 py-3 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
-                       >
-                        <Play className="mr-2 h-4 w-4" />
-                        Try It Yourself Now! 🚀
-                      </Button>
-                    )}
-                    
-                                         <Button
-                       variant="outline"
-                       asChild
-                       className="border-2 border-orange-200 text-orange-700 hover:bg-orange-50 rounded-full px-6 py-3 font-medium transition-all"
-                     >
-                      <a 
-                        href="https://agreeable-idea-6f3.notion.site/Broq-Documentation-2142e0439528805da5cfdd912d41433d" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                      >
-                        📚 Read Documentation
-                      </a>
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* What You Can Build Section */}
-      <section className="px-4 py-16 sm:px-6 lg:px-8 bg-white/50">
-        <div className="mx-auto max-w-7xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-4">🎨 What You Can Build</h2>
-            <p className="text-xl text-gray-600">
-              From simple chatbots to complex AI workflows - the possibilities are endless!
-            </p>
+      {/* Feature Cards Section */}
+      <section className="py-20 px-4 bg-white border-y-2 border-gray-100">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">What Can You Build?</h2>
+            <p className="text-xl text-gray-500 font-medium">Everything from silly bots to serious tools.</p>
           </div>
 
           <div className="grid gap-8 md:grid-cols-3">
-            {/* AI Lab */}
-            <Card className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-yellow-50 to-yellow-100 border-0 rounded-3xl">
-              <CardContent className="p-8 text-center">
-                <div className="mb-6 flex justify-center">
-                  <div className="rounded-full bg-yellow-500 p-4 text-white group-hover:scale-110 transition-transform">
-                    <Zap className="h-8 w-8" />
-                  </div>
-                </div>
-                <h3 className="mb-4 text-2xl font-bold text-gray-900">🧠 AI Learning Lab</h3>
-                <p className="text-gray-600 mb-6">
-                  Build experiments to explore how LLMs reason. Create interactive programs that test prompts, logic, and sentiment. Solve challenges with AI and understand it from inside out.
-                </p>
-                <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100 hover:text-yellow-800">
-                  Project Based Learning
-                </Badge>
-              </CardContent>
-            </Card>
-
-            {/* Logic Games */}
-            <Card className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-orange-50 to-orange-100 border-0 rounded-3xl">
-              <CardContent className="p-8 text-center">
-                <div className="mb-6 flex justify-center">
-                  <div className="rounded-full bg-orange-500 p-4 text-white group-hover:scale-110 transition-transform">
-                    <Gamepad2 className="h-8 w-8" />
-                  </div>
-                </div>
-                <h3 className="mb-4 text-2xl font-bold text-gray-900">🧩 Logic Puzzle/Game Designer</h3>
-                <p className="text-gray-600 mb-6">
-                  Create choose-your-own adventure games, quizzes, and interactive stories with branching AI conversations.
-                </p>
-                <Badge className="bg-orange-100 text-orange-800 hover:bg-orange-100 hover:text-orange-800">
-                  Creative & Design Thinking
-                </Badge>
-              </CardContent>
-            </Card>
-
-            {/* Tweet Bots */}
-            <Card className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-green-50 to-green-100 border-0 rounded-3xl">
-              <CardContent className="p-8 text-center">
-                <div className="mb-6 flex justify-center">
-                  <div className="rounded-full bg-green-500 p-4 text-white group-hover:scale-110 transition-transform">
-                    <MessageSquare className="h-8 w-8" />
-                  </div>
-                </div>
-                <h3 className="mb-4 text-2xl font-bold text-gray-900">🎓 Classroom AI Challenges</h3>
-                <p className="text-gray-600 mb-6">
-                  Let students build their own AI flows to solve problems. Create activities like "summarize and fact-check," "detect tone," or "build a tutor" — all with no code.
-                </p>
-                <Badge className="bg-green-100 text-green-800 hover:bg-green-100 hover:text-green-800">
-                  Hands-on AI Literacy
-                </Badge>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonial Section */}
-      {/* 
-      <section className="px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl">
-          <div className="relative">
-            <div className="bg-yellow-200 rounded-lg p-8 shadow-lg transform rotate-1 hover:rotate-0 transition-transform duration-300 border-l-4 border-yellow-400">
-              <div className="absolute -top-2 -left-2 w-6 h-6 bg-red-400 rounded-full shadow-md"></div>
-              <div className="font-handwriting text-lg text-gray-800 mb-4">
-                "Broq completely changed how I teach AI to my students! 🎓 Instead of getting lost in code, they're
-                building amazing chatbots and logic games in minutes. It's like Scratch but for the AI era!"
+            {/* Card 1 */}
+            <div className="group relative bg-yellow-50 rounded-3xl border-2 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] transition-all duration-200 cursor-default">
+              <div className="w-16 h-16 bg-yellow-400 rounded-2xl border-2 border-black flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform">
+                <Zap className="w-8 h-8 text-black fill-black" />
               </div>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-blue-400 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                  S
-                </div>
-                <div>
-                  <div className="font-semibold text-gray-900">Sarah Chen</div>
-                  <div className="text-sm text-gray-600">CS Professor, Stanford University</div>
-                </div>
+              <h3 className="text-2xl font-black text-gray-900 mb-3">AI Logic Lab</h3>
+              <p className="text-gray-700 font-medium leading-relaxed mb-6">
+                Experiment with prompt engineering visually. Chain thoughts together to create smarter agents.
+              </p>
+              <div className="inline-block px-3 py-1 bg-white border-2 border-black rounded-lg text-xs font-bold uppercase tracking-wide">
+                For Learning
+              </div>
+            </div>
+
+            {/* Card 2 */}
+            <div className="group relative bg-orange-50 rounded-3xl border-2 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] transition-all duration-200 cursor-default">
+              <div className="w-16 h-16 bg-orange-400 rounded-2xl border-2 border-black flex items-center justify-center mb-6 group-hover:-rotate-6 transition-transform">
+                <Gamepad2 className="w-8 h-8 text-black fill-black" />
+              </div>
+              <h3 className="text-2xl font-black text-gray-900 mb-3">Game Designer</h3>
+              <p className="text-gray-700 font-medium leading-relaxed mb-6">
+                Build choose-your-own adventure games where the story evolves based on player choices.
+              </p>
+              <div className="inline-block px-3 py-1 bg-white border-2 border-black rounded-lg text-xs font-bold uppercase tracking-wide">
+                For Fun
+              </div>
+            </div>
+
+            {/* Card 3 */}
+            <div className="group relative bg-green-50 rounded-3xl border-2 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] transition-all duration-200 cursor-default">
+              <div className="w-16 h-16 bg-green-400 rounded-2xl border-2 border-black flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform">
+                <MessageSquare className="w-8 h-8 text-black fill-black" />
+              </div>
+              <h3 className="text-2xl font-black text-gray-900 mb-3">Classroom Tools</h3>
+              <p className="text-gray-700 font-medium leading-relaxed mb-6">
+                Create "detect the tone" or "fact check this" challenges for students without code.
+              </p>
+              <div className="inline-block px-3 py-1 bg-white border-2 border-black rounded-lg text-xs font-bold uppercase tracking-wide">
+                For Education
               </div>
             </div>
           </div>
         </div>
       </section>
-      */}
 
-      {/* Call to Action Section */}
-      <section className="px-4 py-20 sm:px-6 lg:px-8 bg-gradient-to-r from-orange-600 via-orange-500 to-yellow-500">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="mb-6 text-4xl font-bold text-white sm:text-5xl">Ready to Build Something Amazing? 🚀</h2>
-          <p className="mb-8 text-xl text-orange-100">
-            Join thousands of creators, educators, and AI enthusiasts who are building the future with visual
-            programming blocks!
-          </p>
-
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            {isClient && user ? (
-              <Button
-                size="lg"
-                asChild
-                className="bg-white text-orange-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
-              >
-                <a href="/app">
-                  <Sparkles className="mr-2 h-5 w-5" />
-                  Try broq now! 🎉
-                </a>
-              </Button>
-            ) : (
-              <Button
-                size="lg"
-                onClick={() => openAuthModal('signup')}
-                className="bg-white text-orange-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
-              >
-                <Sparkles className="mr-2 h-5 w-5" />
-                Try Broq Now - It's Free! 🎉
-              </Button>
-            )}
-            <a href="https://calendar.app.google/hQWGAkn1S4LhGayD7">
-            <Button
-              variant="outline"
-              size="lg"
-              className="border-2 border-white text-white hover:bg-white hover:text-orange-600 px-8 py-4 text-lg font-semibold rounded-full bg-transparent"
-            >
+      {/* CTA Section */}
+      <section className="py-24 px-4 relative overflow-hidden">
+        <div className="max-w-5xl mx-auto bg-black rounded-[3rem] p-12 md:p-24 text-center relative shadow-[12px_12px_0px_0px_#ea580c]">
+          <div className="relative z-10">
+            <h2 className="text-4xl md:text-6xl font-black text-white mb-8 leading-tight">
+              Ready to build something <br/>
+              <span className="text-orange-500">awesome?</span>
+            </h2>
+            
+            <div className="flex flex-col sm:flex-row justify-center gap-6">
+              {isClient && user ? (
+                <Button
+                  size="lg"
+                  asChild
+                  className="bg-white text-black hover:bg-gray-100 px-12 py-8 text-xl font-bold rounded-2xl border-2 border-transparent hover:scale-105 transition-transform"
+                >
+                  <a href="/app">Launch Broq 🎉</a>
+                </Button>
+              ) : (
+                <Button
+                  size="lg"
+                  onClick={() => openAuthModal('signup')}
+                  className="bg-white text-black hover:bg-gray-100 px-12 py-8 text-xl font-bold rounded-2xl border-2 border-transparent hover:scale-105 transition-transform"
+                >
+                  Get Started Free 🎉
+                </Button>
+              )}
               
-                <Bot className="mr-2 h-5 w-5" />
-                Book a demo call!
-              
-            </Button>
-            </a>
+              <a href="https://calendar.app.google/hQWGAkn1S4LhGayD7">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="bg-transparent text-white border-2 border-white hover:bg-white hover:text-black px-12 py-8 text-xl font-bold rounded-2xl transition-colors"
+                >
+                  Book Demo 🤖
+                </Button>
+              </a>
+            </div>
           </div>
-
-          <div className="mt-8 text-orange-100">
-            <p className="text-sm">✨ Build something cool • 🧱 Open source forever • 🚀 Deploy anywhere</p>
+          
+          {/* Background patterns */}
+          <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+             <div className="absolute top-10 left-10 w-32 h-32 rounded-full border-4 border-white"></div>
+             <div className="absolute bottom-10 right-10 w-40 h-40 rounded-full bg-orange-500"></div>
+             <div className="absolute top-1/2 left-1/4 w-20 h-20 bg-yellow-500 rotate-45"></div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <div className="flex items-center gap-2">
-              <div 
-                className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold"
-                style={{
-                  background: 'linear-gradient(135deg, #ea580c 0%, #f97316 100%)',
-                  backgroundSize: '100% 100%',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundAttachment: 'scroll'
-                }}
-              >
-                B
-              </div>
-              <span className="text-xl font-bold text-white">Broq</span>
-              <span className="text-gray-400">- Visual Flow Builder</span>
+      <footer className="bg-white border-t-2 border-gray-100 py-12 px-4">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-orange-600 flex items-center justify-center text-white font-bold text-xl">
+              B
             </div>
-
-            <div className="flex items-center gap-6 text-gray-400">
-              <a href="https://agreeable-idea-6f3.notion.site/Broq-Documentation-2142e0439528805da5cfdd912d41433d" className="hover:text-white transition-colors">
-                Documentation
-              </a>
-              <a href="https://github.com/bloomberg-sudo-dev/broq" className="hover:text-white transition-colors">
-                GitHub
-              </a>
-              <a href="https://discord.gg/py6tw3f28N" className="hover:text-white transition-colors">
-                Discord
-              </a>
-            </div>
+            <span className="font-black text-xl text-gray-900">Broq</span>
           </div>
-
-          <div className="mt-8 border-t border-gray-800 pt-8 text-center text-gray-400">
-            <p>Built with ❤️ by the open source community. MIT Licensed.</p>
+          
+          <div className="flex gap-8 font-bold text-gray-600">
+            <a href="https://agreeable-idea-6f3.notion.site/Broq-Documentation-2142e0439528805da5cfdd912d41433d" className="hover:text-orange-600 transition-colors">Docs</a>
+            <a href="https://github.com/bloomberg-sudo-dev/broq" className="hover:text-orange-600 transition-colors">GitHub</a>
+            <a href="https://discord.gg/py6tw3f28N" className="hover:text-orange-600 transition-colors">Discord</a>
           </div>
+          
+          <p className="text-gray-400 font-medium text-sm">
+            © {new Date().getFullYear()} Broq. MIT Licensed.
+          </p>
         </div>
       </footer>
 
-      {/* Auth Modal */}
       <AuthModal 
         isOpen={authModalOpen} 
         onClose={() => setAuthModalOpen(false)} 
         defaultMode={authMode}
       />
-
-      {/* Auth Redirect Handler */}
       <AuthRedirect />
     </div>
   )
